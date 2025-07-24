@@ -6,8 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "set NODE_ENV=development&& nodemon server.js",
+    "dev": "set NODE_ENV=development&& nodemon server.js",
+	"prod": "set NODE_ENV=production&& set NODE_EXTRA_CA_CERTS=./isrgrootx1.pem&& nodemon server.js"
   },
   "keywords": [],
   "author": "",

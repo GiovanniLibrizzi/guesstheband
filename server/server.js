@@ -3,18 +3,26 @@
 const express = require('express')
 const cors = require('cors')
 const mysql = require('mysql2')
-require('dotenv').config()
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+const fs = require('fs')
+
+
 
 const app = express()
-const port = 8800
+const port = process.env.DB_PORT
 
 
 
 const db = mysql.createConnection({
-	host: "localhost",
-	user: "root",
+	host: process.env.DB_HOST,//"localhost",
+	user: process.env.DB_USER,//"root",
 	password: process.env.DB_PASSWORD,
-	database: "db",
+	database: process.env.DB_SCHEMA, //"db",
+	ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
+         minVersion: 'TLSv1.2',
+         ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
+      } : null,
+
 });
 
 app.use(express.json())
@@ -32,6 +40,19 @@ app.get("/bands", (req,res) => {
 			return res.json(err)
 		} 
 		return res.json(data)	
+	})
+})
+
+app.get("/bands/today", (req, res) => {
+	const q = 
+	`SELECT * FROM db.bands b
+	INNER JOIN db.daily_bands d ON d.band_id=b.id
+	WHERE CURDATE()=date;`;
+	db.query(q, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+		return res.json(data);
 	})
 })
 

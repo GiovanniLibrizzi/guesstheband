@@ -61,3 +61,19 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+form {
+    display: inline;
+}
+
+.results {
+  white-space: pre-wrap;
+}
+
+.phrase {
+	text-align: left;
+	display: inline
+};
+.right {
+	text-align: right;
+}

@@ -1,16 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import { GameProvider } from "./contexts/GameContext";
 
 import Game from "./pages/Game";
 import AdminSubmit from "./pages/AdminSubmit";
 import AdminCalendar from "./pages/AdminCalendar";
-import viteLogo from "/vite.svg";
 import "./css/App.css";
 
 function App() {
-  //const [count, setCount] = useState(0);
-
   return (
     <GameProvider>
       <div className="App">

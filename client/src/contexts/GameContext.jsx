@@ -1,5 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
+import { createContext, useState, useContext } from "react";
 import { Status } from "../Utils.js";
 
 const GameContext = createContext();
@@ -12,8 +11,7 @@ export const GameProvider = ({ children }) => {
   const [guesses, setGuesses] = useState(0);
   const [previousGuesses, setPreviousGuesses] = useState([]);
   const [gameStatus, setGameStatus] = useState(Status.PLAYING);
-
-  const date = new Date();
+  const maxGuesses = 6;
 
   const data = {
     gameStatus,
@@ -26,6 +24,7 @@ export const GameProvider = ({ children }) => {
     setGuessQuery,
     band,
     setBand,
+    maxGuesses,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

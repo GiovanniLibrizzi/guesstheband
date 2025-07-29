@@ -15,9 +15,6 @@ function GamePhrase() {
   var bandImgLink = `../src/assets/img_band/${band.band_id}-m.jpg`;
 
   const prepareGamePhrases = () => {
-    //   if (bandNotFound) {
-    //     return <p>test</p>;
-    //   }
     // -- notable release date
     const dateOptions = {
       year: "numeric",

@@ -1,7 +1,7 @@
   export const Status = Object.freeze({
-	PLAYING: "PLAYING",
-	VICTORY: "VICTORY",
-	FAILURE: "FAILURE",
+	PLAYING: "playing",
+	VICTORY: "victory",
+	FAILURE: "failure",
   });
 
 export const startDate = new Date(2025, 6, 22);
@@ -28,8 +28,23 @@ export const getDateNumber = () => {
 }
 
 export const checkGuess = (guess, answer) => {
+	answer = answer.toLowerCase();
+	guess = guess.toLowerCase();
 	var correct = false;
-	if (guess == answer.toLowerCase()) {
+	var hasThe = false;
+	if (guess == answer) {
+		correct = true;
+	}
+	console.log("check:", );
+	if (guess.substring(0,4) == "the ") {
+		hasThe = true;
+		guess = guess.substring(4, guess.length);
+		if (guess == answer) {
+			correct = true;
+		}
+	}
+	
+	if (isEditDistanceOne(guess, answer)) {
 		correct = true;
 	}
 
@@ -78,4 +93,64 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus) =
 	return results;
 
 }
-//⬛🟥⬛⬛🟩⬜
+
+
+// JavaScript program to check if given two strings are  
+// at distance one.
+
+// Returns true if edit distance between s1 and  
+// s2 is one, else false
+// credit: https://www.geeksforgeeks.org/dsa/check-if-two-given-strings-are-at-edit-distance-one/
+function isEditDistanceOne(s1, s2) {
+
+    // Find lengths of given strings
+    let m = s1.length, n = s2.length;
+
+    // If difference between lengths is more than  
+    // 1, then strings can't be at one distance
+    if (Math.abs(m - n) > 1)
+        return false;
+
+    // Count of edits
+    let count = 0;
+
+    let i = 0, j = 0;
+    while (i < m && j < n) {
+
+        // If current characters don't match
+        if (s1[i] !== s2[j]) {
+
+            // If one edit has been done already
+            if (count === 1)
+                return false;
+
+            // If length of one string is  
+            // more, then only possible edit  
+            // is to remove a character
+            if (m > n)
+                i++;
+            else if (m < n)
+                j++;
+            else {
+                i++;
+                j++;
+            }
+
+            // Increment count of edits
+            count++;
+        }
+
+        // If current characters match
+        else {
+            i++;
+            j++;
+        }
+    }
+
+    // If last character is extra in any string
+    if (i < m || j < n)
+        count++;
+
+    return count <= 1;
+}
+//🟥⬛🟩⬜

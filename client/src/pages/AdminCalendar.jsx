@@ -5,7 +5,6 @@ import "../css/Admin.css";
 import AdminLogin from "../components/AdminLogin";
 
 function AdminCalendar() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [queryDate, setQueryDate] = useState(null);
   const [band, setBand] = useState(null);
   const [bands, setBands] = useState(null);
@@ -34,24 +33,15 @@ function AdminCalendar() {
     }
   };
 
-  if (!loggedIn) {
-    return (
-      <>
-        <AdminLogin setLoggedIn={setLoggedIn} />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <p>Select a date</p>
-        <input
-          type="date"
-          onChange={(e) => setQueryDate(e.target.value)}
-        ></input>
-        <button onClick={handleFetch}>Fetch</button>
-      </>
-    );
-  }
+  const calendarHTML = (
+    <>
+      <p>Select a date</p>
+      <input type="date" onChange={(e) => setQueryDate(e.target.value)}></input>
+      <button onClick={handleFetch}>Fetch</button>
+    </>
+  );
+
+  return <AdminLogin renderHTML={calendarHTML} />;
 }
 
 export default AdminCalendar;

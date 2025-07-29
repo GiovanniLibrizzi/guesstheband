@@ -30,8 +30,6 @@ function AdminSubmit() {
   });
   var bandImageSubmitted = false;
 
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [password, setPassword] = useState("");
   var noMembers = false;
 
   const handleChange = (e) => {
@@ -103,97 +101,88 @@ function AdminSubmit() {
     console.log("Band object:", band);
   };
 
-  if (!loggedIn) {
-    return (
-      <>
-        <AdminLogin setLoggedIn={setLoggedIn} />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <h3>Submit a band entry into the database</h3>
+  const submitHTML = (
+    <>
+      <h3>Submit a band entry into the database</h3>
 
-        <form onChange={handleChange}>
-          <p>Entry is an artist (and not a band)</p>
-          <input
-            type="checkbox"
-            placeholder="Is an artist (and not a band)"
-            name="is_artist_solo"
-          ></input>
-          <input placeholder="Band name" name="name"></input>
-          <input placeholder="Years active" name="years_active"></input>
-          <input placeholder="Location" name="location"></input>
-          <input placeholder="Main genre" name="genre"></input>
-          <input placeholder="Subgenres" name="subgenres"></input>
-          <input
-            type="number"
-            placeholder="Monthly listeners"
-            name="monthly_listeners"
-          ></input>
-
-          <p>Notable release is first work</p>
-          <input
-            type="checkbox"
-            placeholder="Notable is first work"
-            name="notable_is_first_work"
-          ></input>
-          <input
-            placeholder="Notable work name"
-            name="notable_work_name"
-          ></input>
-          <p>Notable release is first work</p>
-
-          <input
-            type="date"
-            placeholder="Notable release date"
-            name="notable_release_date"
-          ></input>
-          <input placeholder="Top song #5" name="top_song_5"></input>
-          <input placeholder="Top song #4" name="top_song_4"></input>
-          <input placeholder="Top song #3" name="top_song_3"></input>
-          <input placeholder="Top song #2" name="top_song_2"></input>
-          <input placeholder="Top song #1" name="top_song_1"></input>
-          <input
-            type="number"
-            placeholder="Album count"
-            name="album_count"
-          ></input>
-          <input type="number" placeholder="EP count" name="ep_count"></input>
-          <input placeholder="Label name(s)" name="label_name"></input>
-          {!band.is_artist_solo && (
-            <>
-              <input placeholder="Band members" name="members"></input>
-            </>
-          )}
-        </form>
-
-        {!band.is_artist_solo && (
-          <>
-            <p>Band members image</p>
-            <input
-              type="file"
-              accept=".jpg"
-              placeholder="img_band"
-              name="img_band"
-            ></input>{" "}
-          </>
-        )}
-
-        <p>Notable album cover image</p>
+      <form onChange={handleChange}>
+        <p>Entry is an artist (and not a band)</p>
         <input
-          type="file"
-          accept=".jpg"
-          placeholder="img_album"
-          name="img_album"
+          type="checkbox"
+          placeholder="Is an artist (and not a band)"
+          name="is_artist_solo"
+        ></input>
+        <input placeholder="Band name" name="name"></input>
+        <input placeholder="Years active" name="years_active"></input>
+        <input placeholder="Location" name="location"></input>
+        <input placeholder="Main genre" name="genre"></input>
+        <input placeholder="Subgenres" name="subgenres"></input>
+        <input
+          type="number"
+          placeholder="Monthly listeners"
+          name="monthly_listeners"
         ></input>
 
-        <br></br>
-        <br></br>
-        <button onClick={handleSubmit}>Submit new band entry</button>
-      </>
-    );
-  }
+        <p>Notable release is first work</p>
+        <input
+          type="checkbox"
+          placeholder="Notable is first work"
+          name="notable_is_first_work"
+        ></input>
+        <input placeholder="Notable work name" name="notable_work_name"></input>
+        <p>Notable release is first work</p>
+
+        <input
+          type="date"
+          placeholder="Notable release date"
+          name="notable_release_date"
+        ></input>
+        <input placeholder="Top song #5" name="top_song_5"></input>
+        <input placeholder="Top song #4" name="top_song_4"></input>
+        <input placeholder="Top song #3" name="top_song_3"></input>
+        <input placeholder="Top song #2" name="top_song_2"></input>
+        <input placeholder="Top song #1" name="top_song_1"></input>
+        <input
+          type="number"
+          placeholder="Album count"
+          name="album_count"
+        ></input>
+        <input type="number" placeholder="EP count" name="ep_count"></input>
+        <input placeholder="Label name(s)" name="label_name"></input>
+        {!band.is_artist_solo && (
+          <>
+            <input placeholder="Band members" name="members"></input>
+          </>
+        )}
+      </form>
+
+      {!band.is_artist_solo && (
+        <>
+          <p>Band members image</p>
+          <input
+            type="file"
+            accept=".jpg"
+            placeholder="img_band"
+            name="img_band"
+          ></input>{" "}
+        </>
+      )}
+
+      <p>Notable album cover image</p>
+      <input
+        type="file"
+        accept=".jpg"
+        placeholder="img_album"
+        name="img_album"
+      ></input>
+
+      <br></br>
+      <br></br>
+      <button onClick={handleSubmit}>Submit new band entry</button>
+    </>
+  );
+
+  return <AdminLogin renderHTML={submitHTML} />;
 }
 
 export default AdminSubmit;

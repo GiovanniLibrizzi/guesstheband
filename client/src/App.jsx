@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { GameProvider } from "./contexts/GameContext";
 
-import Home from "./pages/Home";
+import Game from "./pages/Game";
 import AdminSubmit from "./pages/AdminSubmit";
 import AdminCalendar from "./pages/AdminCalendar";
 import viteLogo from "/vite.svg";
@@ -22,7 +22,7 @@ function App() {
 
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Game />} />
             <Route path="/admin/submit" element={<AdminSubmit />} />
             <Route path="/admin/calendar" element={<AdminCalendar />} />
           </Routes>

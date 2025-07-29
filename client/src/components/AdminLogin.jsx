@@ -3,8 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import bcrypt from "bcryptjs";
 
-function AdminLogin({ setLoggedIn }) {
+function AdminLogin({ renderHTML }) {
   const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const login = async (username, password) => {
     const user = {
@@ -58,7 +59,7 @@ function AdminLogin({ setLoggedIn }) {
       alert("Incorrect login!");
     }
   };
-  return (
+  const loginForm = (
     <form onSubmit={handleLogin}>
       <p>Password:</p>
       <input
@@ -69,6 +70,12 @@ function AdminLogin({ setLoggedIn }) {
       <button>Login</button>
     </form>
   );
+
+  if (!loggedIn) {
+    return loginForm;
+  } else {
+    return renderHTML;
+  }
 }
 
 export default AdminLogin;

@@ -9,9 +9,9 @@ import {
   Status,
   aGrammar,
 } from "../Utils.js";
-import "../css/Home.css";
+import "../css/Game.css";
 
-function Home() {
+function Game() {
   const [loading, setLoading] = useState(true);
   const {
     gameStatus,
@@ -124,7 +124,8 @@ function Home() {
       ) : (
         <div>
           <h3>{`Game #${getDateNumber()} (${date.toLocaleDateString()})`}</h3>
-          <GamePhrase></GamePhrase>
+
+          <GamePhrase />
 
           {gameStatus == Status.PLAYING ? (
             <div>
@@ -201,4 +202,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Game;

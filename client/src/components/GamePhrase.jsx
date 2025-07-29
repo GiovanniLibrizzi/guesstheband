@@ -1,4 +1,4 @@
-import "../css/Home.css";
+import "../css/Game.css";
 import { useGameContext } from "../contexts/GameContext";
 import { Status, aGrammar } from "../Utils.js";
 

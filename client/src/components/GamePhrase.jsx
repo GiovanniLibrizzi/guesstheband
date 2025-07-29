@@ -1,18 +1,15 @@
 import "../css/Game.css";
 import { useGameContext } from "../contexts/GameContext";
 import { Status, aGrammar } from "../Utils.js";
+import { useEffect } from "react";
 
 function GamePhrase() {
-  const { band, gameStatus, guesses } = useGameContext();
+  const { band, gameStatus, guesses, loading } = useGameContext();
+
   var showBandImg = false;
   var phaseAlbumImg = 4;
   var phaseBandMembers = 3;
   var showBandImg = false;
-
-  var albumImgLinkBlur = `../src/assets/img_album/${band.band_id}-b.jpg`;
-  var albumImgLink = `../src/assets/img_album/${band.band_id}.jpg`;
-
-  var bandImgLink = `../src/assets/img_band/${band.band_id}-m.jpg`;
 
   const prepareGamePhrases = () => {
     // -- notable release date
@@ -99,10 +96,18 @@ function GamePhrase() {
     }
   };
 
+  if (band == null) {
+    return <></>;
+  }
+
+  var albumImgLinkBlur = `../src/assets/img_album/${band.band_id}-b.jpg`;
+  var albumImgLink = `../src/assets/img_album/${band.band_id}.jpg`;
+
+  var bandImgLink = `../src/assets/img_band/${band.band_id}-m.jpg`;
+
   var gamePhrases = prepareGamePhrases();
 
   // HTML return
-
   return (
     <>
       {gameStatus != Status.VICTORY ? (

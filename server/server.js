@@ -70,6 +70,20 @@ app.get("/bands/date", (req, res) => {
 		return res.json(data);
 	})
 })
+app.get("/bands/date/id", (req, res) => {
+	const id = req.query.id;
+	console.log("id",id);
+	const q = 
+	`SELECT * FROM db.bands b
+	INNER JOIN db.daily_bands d ON d.band_id=b.id
+	WHERE d.id=(?);`;
+	db.query(q, [id], (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+		return res.json(data);
+	})
+})
 
 app.get("/bands/dates", (req, res) => {
 	const date = req.query.date;

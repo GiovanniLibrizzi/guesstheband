@@ -4,6 +4,23 @@
 	FAILURE: "failure",
   });
 
+  export const stringToStatus = (str) => {
+	switch (str) {
+		case "playing":
+			return Status.PLAYING;
+			break;
+		case "victory":
+			return Status.VICTORY;
+			break;
+		case "failure":
+			return Status.FAILURE;
+			break;
+		default:
+			return null;
+			break;
+	}
+  }
+
 export const startDate = new Date(2025, 6, 22);
 
 export const aGrammar = (nextWord, capital) => {
@@ -55,7 +72,7 @@ export const checkGuess = (guess, answer) => {
 
 
 
-export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus) => {
+export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, day) => {
 	var score = "";
 	for (var i = 0; i < maxGuesses; i++) {
 	
@@ -86,7 +103,7 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus) =
 	if (guesses == 1) {
 		emoji = '🔥';
 	}
-	var results = `#GuessTheBand #${getDateNumber()}\n\n${emoji}:${score}\n\n<insert link here>`
+	var results = `#GuessTheBand #${day}\n\n${emoji}:${score}\n\n<insert link here>`
 	// console.log(previousGuesses)
 	// console.log(guesses);
 	navigator.clipboard.writeText(results);
@@ -153,4 +170,12 @@ function isEditDistanceOne(s1, s2) {
 
     return count <= 1;
 }
+ 
+// https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
+export function isNumeric(str) {
+  if (typeof str != "string") return false // we only process strings!  
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
 //🟥⬛🟩⬜

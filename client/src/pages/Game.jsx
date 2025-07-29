@@ -2,33 +2,33 @@ import GamePhrase from "../components/GamePhrase.jsx";
 import GameGuess from "../components/GameGuess.jsx";
 import { useGameContext } from "../contexts/GameContext.jsx";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
-import {
-  checkGuess,
-  shareResults,
-  getDateNumber,
-  Status,
-  aGrammar,
-} from "../Utils.js";
+import { isNumeric } from "../Utils.js";
 import "../css/Game.css";
 
 function Game() {
-  const [loading, setLoading] = useState(true);
-  const { setBand } = useGameContext();
+  const { setBand, day, setDay, loading, setLoading } = useGameContext();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // returns true if successful, false if not
-  const fetchTodaysBandData = async () => {
+  const fetchBandData = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/bands/today");
+      const res = await axios.get("http://localhost:8800/bands/date/id", {
+        params: { id: day },
+      });
       if (res.data == []) {
         //bandNotFound = true;
-        setLoading(false);
+        alert("Band data not found today!");
+        //setLoading(false);
         return false;
       }
       setBand(res.data[0]);
+      console.log("day", day);
       console.log("res", res.data[0]);
 
-      setLoading(false);
+      //setLoading(false);
       return true;
     } catch (err) {
       console.log(err);
@@ -38,13 +38,26 @@ function Game() {
 
   const date = new Date();
 
+  // Initialize day
   useEffect(() => {
-    console.log("effect");
-    fetchTodaysBandData();
+    const dayCode = searchParams.get("day");
+    if (dayCode != null) {
+      if (isNumeric(dayCode)) {
+        setDay(dayCode);
+      }
+    }
+    console.log("Day code:", dayCode);
+    //fetchBandData();
   }, []);
 
+  // Fetch band data when day is updated
+  useEffect(() => {
+    fetchBandData();
+    setLoading(false);
+  }, [day]);
+
   //   useEffect(() => {
-  // 	localStorage.setItem(`game-${getDateNumber()}`, )
+  // 	localStorage.setItem(`game-${day}`, )
   //   })
 
   return (
@@ -53,7 +66,7 @@ function Game() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <h3>{`Game #${getDateNumber()} (${date.toLocaleDateString()})`}</h3>
+          <h3>{`Game #${day} (${date.toLocaleDateString()})`}</h3>
 
           <GamePhrase />
           <GameGuess />

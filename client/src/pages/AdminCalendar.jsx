@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Admin.css";
 import AdminLogin from "../components/AdminLogin";
@@ -11,6 +11,7 @@ function AdminCalendar() {
   const handleFetch = async (e) => {
     e.preventDefault();
 
+    //console.log("query date", queryDate);
     const dateObj = {
       date: queryDate,
     };
@@ -18,7 +19,6 @@ function AdminCalendar() {
       alert("Date is null!");
       return;
     }
-    console.log(dateObj);
 
     try {
       const res = await axios.get("http://localhost:8800/bands/date", {
@@ -26,7 +26,7 @@ function AdminCalendar() {
       });
       const resBand = res.data[0];
       setBand(resBand);
-      console.log(band);
+      //console.log(res.data[0]);
     } catch (err) {
       console.log(err);
     }

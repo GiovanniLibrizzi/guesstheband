@@ -22,9 +22,14 @@ function GameGuess() {
     setGuessQuery,
     band,
     maxGuesses,
+    day,
   } = useGameContext();
 
   const inputRef = useRef(null);
+
+  if (band == null) {
+    return <></>;
+  }
 
   // entry
   const handleGuess = (e, skipped = false) => {
@@ -117,12 +122,19 @@ function GameGuess() {
             guesses,
             maxGuesses,
             previousGuesses,
-            gameStatus
+            gameStatus,
+            day
           )}`}</p>
           <button
             onClick={() => {
               navigator.clipboard.writeText(
-                shareResults(guesses, maxGuesses, previousGuesses, gameStatus)
+                shareResults(
+                  guesses,
+                  maxGuesses,
+                  previousGuesses,
+                  gameStatus,
+                  day
+                )
               );
             }}
           >

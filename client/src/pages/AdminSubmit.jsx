@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import bcrypt from "bcryptjs";
-import { login } from "../components/AdminLogin";
+import AdminLogin from "../components/AdminLogin.jsx";
 
 import "../css/Admin.css";
 
@@ -103,29 +103,10 @@ function AdminSubmit() {
     console.log("Band object:", band);
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    var success = await login("admin", password);
-    if (success) {
-      setLoggedIn(true);
-    } else {
-      alert("Incorrect login!");
-    }
-  };
-
   if (!loggedIn) {
     return (
       <>
-        <form onSubmit={handleLogin}>
-          <p>Password:</p>
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-          <button>Login</button>
-        </form>
+        <AdminLogin setLoggedIn={setLoggedIn} />
       </>
     );
   } else {

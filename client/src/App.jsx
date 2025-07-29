@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import { GameProvider } from "./contexts/GameContext";
 
 import Home from "./pages/Home";
 import AdminSubmit from "./pages/AdminSubmit";
@@ -11,7 +12,7 @@ function App() {
   //const [count, setCount] = useState(0);
 
   return (
-    <>
+    <GameProvider>
       <div className="App">
         <h2 className="title">Guess the Band</h2>
 
@@ -27,7 +28,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
-    </>
+    </GameProvider>
   );
 }
 

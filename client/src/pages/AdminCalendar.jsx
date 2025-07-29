@@ -2,25 +2,13 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import "../css/Admin.css";
-import { login } from "../components/AdminLogin";
+import AdminLogin from "../components/AdminLogin";
 
 function AdminCalendar() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [password, setPassword] = useState("");
   const [queryDate, setQueryDate] = useState(null);
   const [band, setBand] = useState(null);
   const [bands, setBands] = useState(null);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    var success = await login("admin", password);
-    if (success) {
-      setLoggedIn(true);
-    } else {
-      alert("Incorrect login!");
-    }
-  };
 
   const handleFetch = async (e) => {
     e.preventDefault();
@@ -49,15 +37,7 @@ function AdminCalendar() {
   if (!loggedIn) {
     return (
       <>
-        <form onSubmit={handleLogin}>
-          <p>Password:</p>
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-          <button>Login</button>
-        </form>
+        <AdminLogin setLoggedIn={setLoggedIn} />
       </>
     );
   } else {

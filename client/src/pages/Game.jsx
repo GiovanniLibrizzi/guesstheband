@@ -4,7 +4,7 @@ import { useGameContext } from "../contexts/GameContext.jsx";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { isNumeric } from "../Utils.js";
+import { getDateNumber, isNumeric } from "../Utils.js";
 import "../css/Game.css";
 
 function Game() {
@@ -25,8 +25,8 @@ function Game() {
         return false;
       }
       setBand(res.data[0]);
-      console.log("day", day);
-      console.log("res", res.data[0]);
+      //console.log("day", day);
+      //console.log("res", res.data[0]);
 
       //setLoading(false);
       return true;
@@ -45,8 +45,10 @@ function Game() {
       if (isNumeric(dayCode)) {
         setDay(dayCode);
       }
+    } else {
+      setDay(getDateNumber());
     }
-    console.log("Day code:", dayCode);
+    //console.log("Day code:", dayCode);
     //fetchBandData();
   }, []);
 

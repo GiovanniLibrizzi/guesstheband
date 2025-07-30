@@ -58,7 +58,7 @@ app.get("/bands/today", (req, res) => {
 
 app.get("/bands/date", (req, res) => {
 	const date = req.query.date;
-	console.log("date",date);
+	//console.log("date",date);
 	const q = 
 	`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id
@@ -72,7 +72,7 @@ app.get("/bands/date", (req, res) => {
 })
 app.get("/bands/date/id", (req, res) => {
 	const id = req.query.id;
-	console.log("id",id);
+	//console.log("id",id);
 	const q = 
 	`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id
@@ -87,7 +87,7 @@ app.get("/bands/date/id", (req, res) => {
 
 app.get("/bands/dates", (req, res) => {
 	const date = req.query.date;
-	console.log("date",date);
+	//console.log("date",date);
 	const q = 
 	`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id;`;

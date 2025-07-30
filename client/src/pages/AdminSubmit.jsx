@@ -96,7 +96,7 @@ function AdminSubmit() {
     } catch (err) {
       console.log(err);
     }
-    console.log("Band object:", band);
+    //console.log("Band object:", band);
   };
 
   const submitHTML = (

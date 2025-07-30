@@ -52,7 +52,7 @@ export const checkGuess = (guess, answer) => {
 	if (guess == answer) {
 		correct = true;
 	}
-	console.log("check:", );
+	//console.log("check:", );
 	if (guess.substring(0,4) == "the ") {
 		hasThe = true;
 		guess = guess.substring(4, guess.length);
@@ -95,18 +95,22 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, d
 	}
 	
 
-	var emojis = ['🎹', '🎸', '🎺', '🎷', '🎧', '🎼', '🎙️', '🎚️', '🎛️', '📻', '🎵', '🎶']
+	var emojis = ['🎹', '🎸', '🎺', '🎷', '🎧', '🎼', '🎙️', '🎚️', '📻', '🎵', '🎶']
 	
 	var rand = Math.floor(Math.random()*emojis.length);
 
-	var emoji = emojis[rand];
+	var emoji = emojis[day%emojis.length];
 	if (guesses == 1) {
 		emoji = '🔥';
 	}
 	var results = `#GuessTheBand #${day}\n\n${emoji}:${score}\n\n<insert link here>`
 	// console.log(previousGuesses)
 	// console.log(guesses);
-	navigator.clipboard.writeText(results);
+	try {
+		navigator.clipboard.writeText(results);
+	} catch (err) {
+		console.log(err);
+	}
 	return results;
 
 }

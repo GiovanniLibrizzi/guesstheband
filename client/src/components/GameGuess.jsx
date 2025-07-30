@@ -46,7 +46,7 @@ function GameGuess() {
       if (correct) {
         // victory screen
         setGameStatus(Status.VICTORY);
-        console.log(`You found the band in ${guesses}!`);
+        //console.log(`You found the band in ${guesses}!`);
       } else {
         setPreviousGuesses((oldArray) => [...oldArray, bandGuessed]);
 
@@ -67,7 +67,7 @@ function GameGuess() {
     e.preventDefault();
 
     if (!guessQuery.trim()) return;
-    console.log("submit", e);
+    //console.log("submit", e);
     return handleGuess(e, false);
   };
 

@@ -23,21 +23,20 @@ export const GameProvider = ({ children }) => {
   };
 
   const loadGameData = (gameData) => {
-    //console.log(gameData);
-    //console.log(gameData.gameStatus);
     setPreviousGuesses(gameData.guesses);
 
     setGameStatus(stringToStatus(gameData.gameStatus));
     setGuesses(gameData.guesses.length + 1);
   };
 
+  // Load storage into an object
   const loadStorage = () => {
-    console.log("Day", day);
+    //console.log("Day", day);
     const loadedData = JSON.parse(localStorage.getItem(`game-${day}`));
     return loadedData;
   };
 
-  // Load local storage on instantization
+  // Load local storage into the states
   useEffect(() => {
     if (day == 0) {
       return;

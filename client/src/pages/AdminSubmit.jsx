@@ -66,7 +66,7 @@ function AdminSubmit() {
             //invalidNull = true;
             noMembers = true;
             //console.log(`${key} was found with an empty value! Cannot submit.`);
-            return;
+
             break;
           }
           break;
@@ -97,6 +97,25 @@ function AdminSubmit() {
       console.log(err);
     }
     //console.log("Band object:", band);
+  };
+
+  const handleShuffle = async (e) => {
+    // try {
+    //   const res = await axios.get("http://localhost:8800/bands/upcoming");
+    //   console.log(res.data);
+    //   const latestDate = new Date(res.data[0].date);
+    //   const increasedDate = new Date(latestDate);
+    //   increasedDate.setDate(latestDate.getDate() + 1);
+    //   console.log("latest", latestDate);
+    //   console.log("increased", increasedDate);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    try {
+      await axios.post("http://localhost:8800/bands/daily/shuffle");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const submitHTML = (
@@ -177,6 +196,8 @@ function AdminSubmit() {
       <br></br>
       <br></br>
       <button onClick={handleSubmit}>Submit new band entry</button>
+
+      <button onClick={handleShuffle}>Shuffle</button>
     </>
   );
 

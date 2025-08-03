@@ -4,4 +4,19 @@
 }
 
 
+.defaultColor {
+	color: rgba(255, 255, 255, 0.87);
+}
+
+.defaultColor:hover {
+	color: rgba(255, 255, 255, 0.87);
+}
+
+.archiveBtn {
+	width: 300px;
+}
+.archive {
+	display:inline;
+	color: rgba(255, 255, 255, 0.87);
+}
 

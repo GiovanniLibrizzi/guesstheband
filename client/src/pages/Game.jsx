@@ -2,10 +2,11 @@ import GamePhrase from "../components/GamePhrase.jsx";
 import GameGuess from "../components/GameGuess.jsx";
 import { useGameContext } from "../contexts/GameContext.jsx";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import axios from "axios";
 import { getDateNumber, isNumeric } from "../Utils.js";
 import "../css/Game.css";
+import PrevDays from "./PrevDays.jsx";
 
 function Game() {
   const { setBand, day, setDay, loading, setLoading } = useGameContext();
@@ -19,7 +20,6 @@ function Game() {
         params: { id: day },
       });
       if (res.data == []) {
-        //bandNotFound = true;
         alert("Band data not found today!");
         //setLoading(false);
         return false;

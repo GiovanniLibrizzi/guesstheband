@@ -7,7 +7,6 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
 const fs = require('fs')
 
 
-
 const app = express()
 const port = process.env.DB_PORT
 
@@ -22,6 +21,7 @@ const db = mysql.createConnection({
          minVersion: 'TLSv1.2',
          ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
       } : null,
+	multipleStatements: true,
 
 });
 
@@ -99,10 +99,32 @@ app.get("/bands/dates", (req, res) => {
 	})
 })
 
+app.get("/bands/upcoming", (req, res) => {
+	const q = 
+	`SELECT * FROM db.daily_bands
+	WHERE date > CURDATE()
+	ORDER BY date DESC;`;
+
+	db.query(q, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+		console.log(data);
+		return res.json(data);
+	})
+})
+
+app.post("/bands/shuffle", (req, res) => {
+	const values = req.body.ids;
+	const q = `UPDATE db.daily_bands SET band_id = ? WHERE (id = ?)`
+})
+
+
+
 // Insert band into backend
 app.post("/bands", (req, res) => {
 	const q = "INSERT INTO bands (`is_artist_solo`, `name`, `years_active`, `location`, `genre`, `subgenres`, `monthly_listeners`, `notable_release_date`, `notable_is_first_work`, `notable_work_name`, `members`, `top_song_5`, `top_song_4`, `top_song_3`, `top_song_2`, `top_song_1`, `album_count`, `ep_count`, `label_name`) VALUES (?)"
-	//const values = ["Woe Boys", 2020, "San Luis Obispo, CA", "dream pop", 26];
+	// insert into bands db
 	const values = [
 		req.body.is_artist_solo,
 		req.body.name,
@@ -125,15 +147,178 @@ app.post("/bands", (req, res) => {
 		req.body.label_name,
 	]
 
+	var bandId = null;
 	db.query(q, [values], (err, data) => {
 		if (err) {
 			console.log(err);
 			return res.json(err)
 		}
-		return res.json("Band has been created successfully.")
+		//console.log(res.json(data));
+		//bandId = data[0].band_id;
+		//return res.json("Band has been created successfully.")
 		
 	});
+
+	// Get last insert ID, then insert into daily_bands db with a new unused date
+	const q2 = 
+	`SELECT LAST_INSERT_ID()`
+	db.query(q2, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+		bandId = Object.values(data[0])[0];
+
+		// get previous date
+		const q3 = 
+		`SELECT * FROM db.daily_bands
+		WHERE date > CURDATE()
+		ORDER BY date DESC;`;
+
+		var newDate = null;
+		//var bandId = null;
+
+		db.query(q3, (err, data) => {
+			if (err) {
+				return res.json(err);
+			}
+
+			//bandId = data[0].band_id;
+			const latestDate = new Date(data[0].date);
+			newDate = new Date(latestDate);
+			newDate.setDate(latestDate.getDate() + 1);
+			console.log("latest", latestDate);
+			console.log("increased", newDate);
+			console.log(data);
+			//return res.json(data);
+
+			
+			// insert into daily_bands db
+			const q4 = 
+			"INSERT INTO daily_bands (`date`, `band_id`) VALUES (?)"
+			const values3 = [
+				newDate,
+				bandId
+			]
+			db.query(q4, [values3], (err, data) => {
+				if (err) {
+					console.log(err);
+					return res.json(err);
+				}
+				return res.json("Band has been inserted successfully.");
+			});
+		})
+	})
+
+	
+
+
+
+
 });
+
+app.post("/bands/daily/shuffle", (req, res) => {
+	// get previous date
+	const q = 
+	`SELECT * FROM db.daily_bands
+	WHERE date > CURDATE()
+	ORDER BY date ASC;`;
+
+	
+
+	db.query(q, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+
+		console.log(data);
+		const startId = data[0].id;
+		const bandIds = []
+		const dayIds = []
+
+		data.forEach(e => {
+			bandIds.push(e.band_id)
+			dayIds.push(e.id);
+			//console.log(element.band_id)
+		});
+		console.log(startId, bandIds);
+
+		var q2 = "";
+		shuffle(bandIds);
+		console.log(bandIds);
+
+
+		bandIds.forEach((e, i) => {
+			q2 += `UPDATE db.daily_bands SET band_id = ${e} WHERE (id = ${dayIds[i]}); `
+		})
+
+		// q2 = `UPDATE db.daily_bands SET band_id = 10 WHERE (id = 8);`
+
+		console.log(q2);
+
+		db.query(q2, (err, data) => {
+				if (err) {
+					console.log(err);
+					return res.json(err);
+				}
+				return res.json("Upcoming daily bands have successfully been shuffled.");
+			});
+		
+	})
+})
+
+
+// app.post("/bands/daily/swap", (req, res) => {
+// 	// get previous date
+// 	const q = 
+// 	`SELECT * FROM db.daily_bands
+// 	WHERE date > CURDATE()
+// 	ORDER BY date ASC;`;
+
+	
+
+// 	db.query(q, (err, data) => {
+// 		if (err) {
+// 			return res.json(err);
+// 		}
+
+// 		console.log(data);
+// 		const startId = data[0].id;
+// 		const bandIds = []
+// 		const dayIds = []
+
+// 		data.forEach(e => {
+// 			bandIds.push(e.band_id)
+// 			dayIds.push(e.id);
+// 			//console.log(element.band_id)
+// 		});
+// 		console.log(startId, bandIds);
+
+// 		var q2 = "";
+// 		shuffle(bandIds);
+// 		console.log(bandIds);
+
+
+// 		bandIds.forEach((e, i) => {
+// 			q2 += `UPDATE db.daily_bands SET band_id = ${e} WHERE (id = ${dayIds[i]}); `
+// 		})
+
+// 		// q2 = `UPDATE db.daily_bands SET band_id = 10 WHERE (id = 8);`
+
+// 		console.log(q2);
+
+// 		db.query(q2, (err, data) => {
+// 				if (err) {
+// 					console.log(err);
+// 					return res.json(err);
+// 				}
+// 				return res.json("Upcoming daily bands have successfully been shuffled.");
+// 			});
+		
+// 	})
+
+
+	
+// })
 
 app.post("/time", (req, res) => {
 	const q = "CURDATE()"
@@ -170,16 +355,6 @@ app.get("/accounts", (req, res) => {
 	})
 })
 
-// app.get("/accounts", (req, res) => {
-// 	const q = `SELECT * FROM db.accounts`;
-	
-// 	db.query(q, (err, data) => {
-// 		if (err) {
-// 			return res.json(err);
-// 		}
-// 		return res.json(data);
-// 	})
-// })
 
 
 
@@ -189,14 +364,18 @@ app.listen(port, () => {
 
 
 
+function shuffle(array) {
+  let currentIndex = array.length;
 
-// app.get('/insert', (req, res) => {
-// 	db.query('INSERT INTO bands (name, monthly_listeners) VALUES ("Woe Boys", 25)', (err, result) => {
-// 		if (err) {
-// 			console.log(err)
-// 		}
-		
-// 		res.send(result);
-// 	})
-// })
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
 
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+}

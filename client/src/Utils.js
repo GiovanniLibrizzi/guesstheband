@@ -21,7 +21,7 @@
 	}
   }
 
-export const startDate = new Date(2025, 6, 22);
+export const startDate = new Date(2025, 6, 27);
 
 export const aGrammar = (nextWord, capital) => {
 	let returnStr = "A";
@@ -70,9 +70,7 @@ export const checkGuess = (guess, answer) => {
 }
 
 
-
-
-export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, day) => {
+export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) => {
 	var score = "";
 	for (var i = 0; i < maxGuesses; i++) {
 	
@@ -87,13 +85,31 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, d
 			if (previousGuesses[i] != null) {
 				score += '🟥';
 			} else {
-				score += '⬛';
+				if (i < guesses) {
+					score += '⬛';
+				} else {
+					score += '❓';
+				}
 			}
 			
 		}
-
 	}
-	
+	// for (var i = guesses; i < maxGuesses-1; i++) {
+	// 	if (gameStatus == Status.VICTORY) {
+	// 		score += '⬜';
+	// 	} 
+	// 	if (gameStatus == Status.PLAYING) {
+	// 		score += '❓';
+	// 	}
+	// }
+
+	return score;
+}
+
+
+export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, day) => {
+
+	const score = generateScore(guesses, maxGuesses, previousGuesses, gameStatus);
 
 	var emojis = ['🎹', '🎸', '🎺', '🎷', '🎧', '🎼', '🎙️', '🎚️', '📻', '🎵', '🎶']
 	
@@ -113,6 +129,51 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, d
 	}
 	return results;
 
+}
+
+export const generateScoreFromStorage = (data) => {
+	if (data == null) {
+		return "❓❓❓❓❓❓"
+	}
+	if (data.gameStatus == Status.PLAYING) {
+		
+	}
+	const guesses = data.guesses.length;
+	const prevGuesses = data.guesses;
+	const gameStatus = data.gameStatus;
+
+	return generateScore(guesses, 6, prevGuesses, gameStatus);
+}
+
+export const generateStatusFromStorage = (data) => {
+	if (data == null) {
+		return "⬅️ Unplayed"
+	}
+	const status = data.gameStatus;
+	const guesses = data.guesses.length;
+	const prevGuesses = data.guesses;
+	var allSkipped = true;
+	for (var i = 0; i < guesses; i++) {
+		if (prevGuesses[i] != null) {
+			allSkipped = false;
+		}
+	}
+
+	switch (status) {
+		case Status.PLAYING:
+			return "🤔 In Progress...";
+			break;
+		case Status.FAILURE:
+			if (!allSkipped) {
+			return "❌ Failed 😭";
+			} else {
+				return "❌ All skipped 💀";
+			}
+			break;
+		case Status.VICTORY:
+			return "✅ Victory!! 😁"
+			break;
+	}
 }
 
 

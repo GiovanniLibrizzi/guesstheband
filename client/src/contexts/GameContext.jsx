@@ -1,5 +1,4 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Status, stringToStatus, getDateNumber } from "../Utils.js";
 
 const GameContext = createContext();
@@ -26,11 +25,11 @@ export const GameProvider = ({ children }) => {
     setPreviousGuesses(gameData.guesses);
 
     setGameStatus(stringToStatus(gameData.gameStatus));
-    setGuesses(gameData.guesses.length + 1);
+    setGuesses(gameData.guesses.length);
   };
 
   // Load storage into an object
-  const loadStorage = () => {
+  const loadStorage = (day) => {
     //console.log("Day", day);
     const loadedData = JSON.parse(localStorage.getItem(`game-${day}`));
     return loadedData;
@@ -41,7 +40,7 @@ export const GameProvider = ({ children }) => {
     if (day == 0) {
       return;
     }
-    const loadedData = loadStorage();
+    const loadedData = loadStorage(day);
     if (loadedData != null) {
       loadGameData(loadedData);
     }
@@ -52,7 +51,7 @@ export const GameProvider = ({ children }) => {
     if (day == 0) {
       return;
     }
-    const loadedData = loadStorage();
+    const loadedData = loadStorage(day);
     if (
       loadedData != null &&
       stringToStatus(loadedData.gameStatus) != Status.PLAYING
@@ -82,6 +81,7 @@ export const GameProvider = ({ children }) => {
     setDay,
     loading,
     setLoading,
+    loadStorage,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

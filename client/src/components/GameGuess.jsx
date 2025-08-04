@@ -96,6 +96,7 @@ function GameGuess() {
               placeholder="Enter your guess"
               value={guessQuery}
               onChange={(e) => setGuessQuery(e.target.value)}
+              autocomplete="off"
             />
           </form>
           <form onSubmit={handleSkip}>

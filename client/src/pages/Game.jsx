@@ -1,15 +1,16 @@
 import GamePhrase from "../components/GamePhrase.jsx";
 import GameGuess from "../components/GameGuess.jsx";
+import GameStats from "../components/GameStats.jsx";
 import { useGameContext } from "../contexts/GameContext.jsx";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import axios from "axios";
-import { getDateNumber, isNumeric } from "../Utils.js";
+import { getDateNumber, isNumeric, Status } from "../Utils.js";
 import "../css/Game.css";
 import PrevDays from "./PrevDays.jsx";
 
 function Game() {
-  const { setBand, day, setDay, loading, setLoading } = useGameContext();
+  const { setBand, day, setDay, loading, setLoading, gameStatus } = useGameContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -72,6 +73,10 @@ function Game() {
 
           <GamePhrase />
           <GameGuess />
+
+          
+          <GameStats />
+          
         </>
       )}
     </div>

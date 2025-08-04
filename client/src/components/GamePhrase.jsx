@@ -9,7 +9,6 @@ function GamePhrase() {
   var showBandImg = false;
   var phaseAlbumImg = 4;
   var phaseBandMembers = 3;
-  var showBandImg = false;
 
   const prepareGamePhrases = () => {
     // -- notable release date
@@ -56,8 +55,10 @@ function GamePhrase() {
     if (band.members != null) {
       memberPhrase = `Members include ${band.members}`;
     } else {
-      showBandImg = true;
-      memberPhrase = `An image of the band's members can be seen below`;
+      if (!band.is_artist_solo) {
+        showBandImg = true;
+        memberPhrase = `An image of the band's members can be seen below`;
+      }
     }
 
     if (band.is_artist_solo) {

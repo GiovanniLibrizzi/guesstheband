@@ -138,7 +138,7 @@ export const generateScoreFromStorage = (data) => {
 	if (data.gameStatus == Status.PLAYING) {
 		
 	}
-	const guesses = data.guesses.length;
+	const guesses = data.guesses.length+1;
 	const prevGuesses = data.guesses;
 	const gameStatus = data.gameStatus;
 
@@ -150,7 +150,7 @@ export const generateStatusFromStorage = (data) => {
 		return "⬅️ Unplayed"
 	}
 	const status = data.gameStatus;
-	const guesses = data.guesses.length;
+	const guesses = data.guesses.length+1;
 	const prevGuesses = data.guesses;
 	var allSkipped = true;
 	for (var i = 0; i < guesses; i++) {
@@ -174,6 +174,10 @@ export const generateStatusFromStorage = (data) => {
 			return "✅ Victory!! 😁"
 			break;
 	}
+}
+
+export const generateStatsFromStorage = (data) => {
+	
 }
 
 
@@ -241,6 +245,11 @@ export function isNumeric(str) {
   if (typeof str != "string") return false // we only process strings!  
   return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
+export function toPercent(num1, num2) {
+	return Math.floor((num1/num2) * 100) + "%"
+
 }
 
 //🟥⬛🟩⬜

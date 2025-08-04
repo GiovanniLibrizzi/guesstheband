@@ -122,7 +122,7 @@ function AdminSubmit() {
     <>
       <h3>Submit a band entry into the database</h3>
 
-      <form onChange={handleChange}>
+      <form onChange={handleChange} autocomplete="off">
         <p>Entry is an artist (and not a band)</p>
         <input
           type="checkbox"

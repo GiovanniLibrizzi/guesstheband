@@ -82,6 +82,10 @@ img:hover {
 	display:inline;
 }
 
+.inline {
+	display:inline;
+}
+
 
 .guesses { 
 	line-height:1;

@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { Status, stringToStatus, getDateNumber } from "../Utils.js";
+import { Status, stringToStatus, getDateNumber, toPercent } from "../Utils.js";
+import axios from "axios";
 
 const GameContext = createContext();
 
@@ -12,7 +13,8 @@ export const GameProvider = ({ children }) => {
   const [previousGuesses, setPreviousGuesses] = useState([]);
   const [gameStatus, setGameStatus] = useState(Status.PLAYING);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState(null);
+  const [localStats, setLocalStats] = useState(null);
+  const [globalStats, setGlobalStats] = useState(null);
 
   const maxGuesses = 6;
   const [day, setDay] = useState(0);
@@ -68,7 +70,7 @@ export const GameProvider = ({ children }) => {
       gamesPlayed: gamesPlayed,
       gamesWon: gamesWon,
     };
-    setStats(stats);
+    setLocalStats(stats);
     return stats;
   };
 
@@ -76,6 +78,36 @@ export const GameProvider = ({ children }) => {
     const data = loadStorage(day);
     data.k = bool ? 1 : 0;
     localStorage.setItem(`game-${day}`, JSON.stringify(data));
+  };
+
+  const loadGlobalStats = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/bands/daily/stats", {
+        params: { day_id: day },
+      });
+      const data = res.data[0];
+
+      const totalWon =
+        data.in1 + data.in2 + data.in3 + data.in4 + data.in5 + data.in6;
+      const globalData = {
+        winDistribution: [
+          data.in1,
+          data.in2,
+          data.in3,
+          data.in4,
+          data.in5,
+          data.in6,
+          data.failed,
+        ],
+        knewIt: toPercent(data.knew_it, data.knew_it + data.didnt_know),
+        totalKnewIt: toPercent(totalWon, totalWon + data.failed),
+      };
+
+      setGlobalStats(globalData);
+      console.log(globalData);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // Load local storage into the states
@@ -110,6 +142,14 @@ export const GameProvider = ({ children }) => {
     loadLocalStats();
   }, [guesses, previousGuesses, gameStatus]);
 
+  // Load global stats
+  useEffect(() => {
+    if (gameStatus != Status.PLAYING) {
+      loadGlobalStats();
+      console.log(globalStats);
+    }
+  }, [gameStatus]);
+
   const data = {
     gameStatus,
     setGameStatus,
@@ -128,9 +168,9 @@ export const GameProvider = ({ children }) => {
     setLoading,
     loadStorage,
     loadAllDays,
-    loadStats: loadLocalStats,
-    stats,
+    localStats,
     setKnewIt,
+    globalStats,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-
+import axios from "axios";
 import "../css/Game.css";
 import { useGameContext } from "../contexts/GameContext";
 import {
@@ -9,6 +9,7 @@ import {
   Status,
   aGrammar,
 } from "../Utils.js";
+import KnowButton from "./KnowButton.jsx";
 
 function GameGuess() {
   const {
@@ -23,31 +24,15 @@ function GameGuess() {
     band,
     maxGuesses,
     day,
-    setKnewIt,
-    loadStorage,
   } = useGameContext();
-  const [showKnowBtn, setShowKnowBtn] = useState(true);
 
   const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (loadStorage(day).k != null) {
-      setShowKnowBtn(false);
-    }
-  }, []);
-
-  const handleKnowBtn = async (knew) => {
-    setShowKnowBtn(false);
-    setKnewIt(knew);
-    console.log("test", knew);
-    generateKnewData(knew);
-  };
 
   if (band == null) {
     return <></>;
   }
 
-  const generateData = (guesses, failed) => {
+  const generateData = (guesses, correct) => {
     const stats = {
       in1: 0,
       in2: 0,
@@ -56,35 +41,24 @@ function GameGuess() {
       in5: 0,
       in6: 0,
       failed: 0,
+      day_id: day,
     };
-    if (failed != true) {
+    if (correct) {
       stats[`in${guesses + 1}`] = 1;
     } else {
       stats.failed = 1;
     }
-    //console.log(stats);
+    return stats;
   };
 
-  const generateKnewData = (knew) => {
-    const stats = {
-      knew_it: 0,
-      didnt_know: 0,
-    };
-    if (knew) {
-      stats.knew_it = 1;
-    } else {
-      stats.didnt_know = 1;
+  const sendStats = async (correct) => {
+    const data = generateData(guesses, correct);
+    console.log(data);
+    try {
+      await axios.post("http://localhost:8800/bands/daily/stats", data);
+    } catch (err) {
+      console.log(err);
     }
-  };
-
-  const sendStats = async (data) => {
-    // try {
-    //   await axios.post("http://localhost:8800/bands", band);
-    //   alert("Successfully entered!");
-    //   window.location.reload();
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
   // entry
   const handleGuess = (e, skipped = false) => {
@@ -102,7 +76,7 @@ function GameGuess() {
         // victory screen
         setGameStatus(Status.VICTORY);
         // send data to stats db
-        sendStats();
+        sendStats(correct);
       } else {
         setPreviousGuesses((oldArray) => [...oldArray, bandGuessed]);
 
@@ -110,7 +84,7 @@ function GameGuess() {
           // failed out
           setGameStatus(Status.FAILURE);
           // send data to stats db
-          sendStats();
+          sendStats(correct);
         }
         // incorrect; add more clues
       }
@@ -177,24 +151,7 @@ function GameGuess() {
           <p>
             The answer was: <b>{`${band.name}`}</b>
           </p>
-          {showKnowBtn && (
-            <>
-              <button
-                onClick={() => {
-                  handleKnowBtn(true);
-                }}
-              >
-                Knew it!
-              </button>
-              <button
-                onClick={() => {
-                  handleKnowBtn(false);
-                }}
-              >
-                Didn't know it...
-              </button>
-            </>
-          )}
+          <KnowButton />
 
           <br></br>
           <p className="results">{`${shareResults(

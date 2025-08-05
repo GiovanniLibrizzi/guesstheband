@@ -1,44 +1,53 @@
 import { useEffect, useState } from "react";
 import { useGameContext } from "../contexts/GameContext";
 import { toPercent, Status } from "../Utils";
+import WinDistribution from "./WinDistribution";
 
 function GameStats() {
-    const { stats, gameStatus } = useGameContext();
+  const { localStats, globalStats, gameStatus } = useGameContext();
+  const [globalGraph, setGlobalGraph] = useState(<></>);
 
- 
-    
-
-    return (
+  useEffect(() => {
+    console.log("global", globalStats);
+    if (globalStats != null) {
+      var gg = (
         <>
-        {gameStatus != Status.PLAYING && (
+          {globalStats.knewIt != null && (
             <>
-            <br></br>
-            <p>Win Distribution:</p>
-            {stats.winDistribution.map((e, i) => (
-                <>
-                {(i < 6) ? (            
-                    <p className="inline">{`${i+1}: `}</p>
-                ) : (
-                <p className="inline">{`X: `}</p>
-                )}
-                
-                {[...Array(e)].map((e, i) => (
-                    <p className="inline">█ </p>
-                ))}
-                
-                <p className="inline">{`${e}`}</p>
-                <br></br>
-                </>
-            ))}
-
-            <p>{`Games played: ${stats.gamesPlayed}`}</p>
-            <p>{`Games won: ${stats.gamesWon}`}</p>
-            <p>{`Win percent: ${toPercent(stats.gamesWon, stats.gamesPlayed)}`}</p>
+              <p>{`${globalStats.totalKnewIt} of players got the answer right`}</p>
+              <p>{`${globalStats.knewIt} of players who failed have heard of the answer`}</p>
             </>
-        )}
-        </>
-    );
+          )}
 
+          <p>Global Win Distribution:</p>
+          <WinDistribution winDistribution={globalStats.winDistribution} />
+        </>
+      );
+    }
+    setGlobalGraph(gg);
+  }, [globalStats]);
+
+  return (
+    <>
+      {gameStatus != Status.PLAYING && (
+        <>
+          <br></br>
+          <p>Win Distribution:</p>
+          <WinDistribution winDistribution={localStats.winDistribution} />
+
+          <p>{`Games played: ${localStats.gamesPlayed}`}</p>
+          <p>{`Games won: ${localStats.gamesWon}`}</p>
+          <p>{`Win percent: ${toPercent(
+            localStats.gamesWon,
+            localStats.gamesPlayed
+          )}`}</p>
+
+          <br></br>
+          {globalGraph}
+        </>
+      )}
+    </>
+  );
 }
 
 export default GameStats;

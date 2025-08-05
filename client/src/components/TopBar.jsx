@@ -9,14 +9,17 @@ function TopBar() {
 
   return (
     <>
-      <button
-        className="topButton"
-        onClick={() => {
-          setShowHowTo(true);
-        }}
-      >
-        ?
-      </button>
+      <a href="/about">
+        <button
+          className="topButton"
+          onClick={() => {
+            setShowHowTo(true);
+          }}
+        >
+          ?
+        </button>
+      </a>
+
       <a href="/archive">
         <button className="topButton">Past</button>
       </a>

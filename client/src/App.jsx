@@ -6,7 +6,8 @@ import AdminSubmit from "./pages/AdminSubmit";
 import AdminCalendar from "./pages/AdminCalendar";
 import TopBar from "./components/TopBar";
 import "./css/App.css";
-import PrevDays from "./pages/Archive";
+import Archive from "./pages/Archive";
+import About from "./pages/About";
 import ImageTest from "./pages/ImageTest";
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Game />} />
-            <Route path="/archive" element={<PrevDays />} />
+            <Route path="/archive" element={<Archive />} />
+            <Route path="/about" element={<About />} />
             <Route path="/admin/submit" element={<AdminSubmit />} />
             <Route path="/admin/calendar" element={<AdminCalendar />} />
             <Route path="/admin/test" element={<ImageTest />} />

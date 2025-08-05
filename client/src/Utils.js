@@ -247,8 +247,12 @@ export function isNumeric(str) {
          !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-export function toPercent(num1, num2) {
-	return Math.floor((num1/num2) * 100) + "%"
+export function toPercent(num1, num2, decimal=1) {
+	const power = 10**decimal
+	if (num2 == 0) {
+		return null;
+	}
+	return Math.round(((num1/num2) * 100)*power)/power + "%"
 
 }
 

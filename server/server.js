@@ -114,12 +114,6 @@ app.get("/bands/upcoming", (req, res) => {
 	})
 })
 
-app.post("/bands/shuffle", (req, res) => {
-	const values = req.body.ids;
-	const q = `UPDATE db.daily_bands SET band_id = ? WHERE (id = ?)`
-})
-
-
 
 // Insert band into backend
 app.post("/bands", (req, res) => {
@@ -319,6 +313,75 @@ app.post("/bands/daily/shuffle", (req, res) => {
 
 	
 // })
+
+
+// Get stats
+app.get("/bands/daily/stats", (req, res) => {
+	const day_id = req.query.day_id;
+	//console.log("date",date);
+	const q = 
+	`SELECT * FROM db.stats WHERE day_id=?`;
+	db.query(q, [day_id], (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+		return res.json(data);
+	})
+})
+
+// Set stats in the server for every day's games
+app.post("/bands/daily/stats", (req, res) => {
+	const day_id = req.body.day_id;
+	// detect if row needs to be inserted
+	const q = `SELECT EXISTS(SELECT * FROM db.stats WHERE day_id=?);`;
+
+	
+
+	db.query(q, [day_id], (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+
+		const exists = Object.values(data[0])[0];
+
+		var q2 = ""
+		if (!exists) {
+			// insert row if it needs to be inserted
+			q2 += `INSERT INTO db.stats (day_id) VALUES (${day_id}); `;
+		}
+		
+		// update in# columns
+		var columns = []
+		for (var i = 0; i < Object.keys(req.body).length; i++) {
+			var key = Object.keys(req.body)[i];
+			var value = Object.values(req.body)[i];
+			if (key != "day_id") {
+				if (value > 0) {
+					columns.push(key);
+				}
+				console.log("key", key);
+			}
+		}
+
+		columns.forEach((e) => {
+			q2 += `UPDATE db.stats SET ${e} = ${e} + 1 WHERE (day_id = ${day_id}); `;
+		})
+
+		// update knew it columns
+
+
+		console.log(q2);
+
+		db.query(q2, (err, data) => {
+			if (err) {
+				console.log(err);
+				return res.json(err);
+			}
+			return res.json("Play stats have been added to the database.");
+		});
+
+	})
+})
 
 app.post("/time", (req, res) => {
 	const q = "CURDATE()"

@@ -6,7 +6,8 @@ import AdminSubmit from "./pages/AdminSubmit";
 import AdminCalendar from "./pages/AdminCalendar";
 import TopBar from "./components/TopBar";
 import "./css/App.css";
-import PrevDays from "./pages/PrevDays";
+import PrevDays from "./pages/Archive";
+import ImageTest from "./pages/ImageTest";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/archive" element={<PrevDays />} />
             <Route path="/admin/submit" element={<AdminSubmit />} />
             <Route path="/admin/calendar" element={<AdminCalendar />} />
+            <Route path="/admin/test" element={<ImageTest />} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -7,10 +7,11 @@ import { useSearchParams } from "react-router";
 import axios from "axios";
 import { getDateNumber, isNumeric, Status } from "../Utils.js";
 import "../css/Game.css";
-import PrevDays from "./PrevDays.jsx";
+import PrevDays from "./Archive.jsx";
 
 function Game() {
-  const { setBand, day, setDay, loading, setLoading, gameStatus } = useGameContext();
+  const { setBand, day, setDay, loading, setLoading, gameStatus } =
+    useGameContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -74,9 +75,7 @@ function Game() {
           <GamePhrase />
           <GameGuess />
 
-          
           <GameStats />
-          
         </>
       )}
     </div>

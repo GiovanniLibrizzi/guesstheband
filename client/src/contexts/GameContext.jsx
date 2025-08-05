@@ -14,20 +14,20 @@ export const GameProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
 
-
   const maxGuesses = 6;
   const [day, setDay] = useState(0);
 
   var gameData = {
     gameStatus: Status.PLAYING,
     guesses: [""],
+    k: null,
   };
 
   const loadGameData = (gameData) => {
     setPreviousGuesses(gameData.guesses);
 
     setGameStatus(stringToStatus(gameData.gameStatus));
-    setGuesses(gameData.guesses.length+1);
+    setGuesses(gameData.guesses.length + 1);
   };
 
   // Load storage into an object
@@ -38,41 +38,45 @@ export const GameProvider = ({ children }) => {
   };
 
   const loadAllDays = () => {
-    const loadedData = []
+    const loadedData = [];
     for (var i = 1; i <= getDateNumber(); i++) {
-      loadedData.push(loadStorage(i))
+      loadedData.push(loadStorage(i));
     }
     return loadedData;
-  }
+  };
 
-  const loadStats = () => {
-    var winDistribution = [0, 0, 0, 0, 0, 0, 0]
+  const loadLocalStats = () => {
+    var winDistribution = [0, 0, 0, 0, 0, 0, 0];
     var gamesPlayed = 0;
     var gamesWon = 0;
     var currentStreak = 0;
     var maxStreak = 0;
     loadAllDays().forEach((e, i) => {
       if (e != null) {
-
         if (e.gameStatus == Status.VICTORY) {
           gamesPlayed++;
           gamesWon++;
           winDistribution[e.guesses.length]++;
         } else if (e.gameStatus == Status.FAILURE) {
           gamesPlayed++;
-          winDistribution[winDistribution.length-1]++;
+          winDistribution[winDistribution.length - 1]++;
         }
       }
-
-    })
+    });
     const stats = {
       winDistribution: winDistribution,
       gamesPlayed: gamesPlayed,
-      gamesWon: gamesWon
-    }
+      gamesWon: gamesWon,
+    };
     setStats(stats);
     return stats;
-  }
+  };
+
+  const setKnewIt = (bool) => {
+    const data = loadStorage(day);
+    data.k = bool ? 1 : 0;
+    localStorage.setItem(`game-${day}`, JSON.stringify(data));
+  };
 
   // Load local storage into the states
   useEffect(() => {
@@ -83,7 +87,7 @@ export const GameProvider = ({ children }) => {
     if (loadedData != null) {
       loadGameData(loadedData);
     }
-    loadStats();
+    loadLocalStats();
   }, [day]);
 
   // Set local storage
@@ -103,7 +107,7 @@ export const GameProvider = ({ children }) => {
     gameData.guesses = previousGuesses;
 
     localStorage.setItem(`game-${day}`, JSON.stringify(gameData));
-    loadStats();
+    loadLocalStats();
   }, [guesses, previousGuesses, gameStatus]);
 
   const data = {
@@ -124,8 +128,9 @@ export const GameProvider = ({ children }) => {
     setLoading,
     loadStorage,
     loadAllDays,
-    loadStats,
-    stats
+    loadStats: loadLocalStats,
+    stats,
+    setKnewIt,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

@@ -45,7 +45,11 @@ function Game() {
     const dayCode = searchParams.get("day");
     if (dayCode != null) {
       if (isNumeric(dayCode)) {
-        setDay(dayCode);
+        if (dayCode <= getDateNumber()) {
+          setDay(dayCode);
+        } else {
+          setDay(getDateNumber());
+        }
       }
     } else {
       setDay(getDateNumber());

@@ -15,7 +15,7 @@ function GameStats() {
           {globalStats.knewIt != null && (
             <>
               <p>{`${globalStats.totalKnewIt} of players got the answer right`}</p>
-              <p>{`${globalStats.knewIt} of players who failed have heard of the answer`}</p>
+              <p>{`~${globalStats.knewIt} of players who failed have heard of the answer`}</p>
             </>
           )}
 

@@ -28,7 +28,7 @@ function Game() {
       }
       setBand(res.data[0]);
       //console.log("day", day);
-      console.log("res", res.data[0]);
+      //console.log("res", res.data[0]);
 
       //setLoading(false);
       return true;

@@ -29,9 +29,13 @@ export const GameProvider = ({ children }) => {
 
   const loadGameData = (gameData) => {
     setPreviousGuesses(gameData.guesses);
-
-    setGameStatus(stringToStatus(gameData.gameStatus));
-    setGuesses(gameData.guesses.length + 1);
+    var status = stringToStatus(gameData.gameStatus);
+    setGameStatus(status);
+    var guesses = gameData.guesses.length;
+    if (status != gameStatus.PLAYING) {
+      guesses++;
+    }
+    setGuesses(guesses);
   };
 
   // Load storage into an object

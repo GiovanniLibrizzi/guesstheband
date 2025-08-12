@@ -81,6 +81,9 @@ export const checkGuess = (guess, answer) => {
 
 
 export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) => {
+	// if (gameStatus != Status.PLAYING) {
+	// 	guesses++;
+	// }
 	console.log("guesses", guesses)
 	var score = "";
 	for (var i = 0; i < maxGuesses; i++) {
@@ -96,7 +99,7 @@ export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) 
 			if (previousGuesses[i] != null) {
 				score += '🟥';
 			} else {
-				if (i < guesses-1) {
+				if (i < guesses) {
 					score += '⬛';
 				} else {
 					score += '❓';

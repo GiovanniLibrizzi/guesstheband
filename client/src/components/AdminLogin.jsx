@@ -15,7 +15,7 @@ function AdminLogin({ renderHTML }) {
     //   const { email, password } = req.body;
 
     try {
-      const res = await axios.get("http://localhost:8800/accounts", {
+      const res = await axios.get(`${process.env.DB_URL}/accounts`, {
         params: user,
       });
 

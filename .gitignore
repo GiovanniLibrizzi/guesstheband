@@ -2,3 +2,4 @@ server/.env
 server/.env.development
 server/.env.production
 server/isrgrootx1.pem
+client/.env

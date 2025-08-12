@@ -8,16 +8,18 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=development&& nodemon server.js",
     "dev": "set NODE_ENV=development&& nodemon server.js",
-	"prod": "set NODE_ENV=production&& set NODE_EXTRA_CA_CERTS=./isrgrootx1.pem&& nodemon server.js"
+    "prod": "set NODE_ENV=production&& set NODE_EXTRA_CA_CERTS=./isrgrootx1.pem&& nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "mysql2": "^3.14.2",
     "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.1"
   }
 }

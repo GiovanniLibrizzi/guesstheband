@@ -10,7 +10,7 @@ import "../css/Game.css";
 import PrevDays from "./Archive.jsx";
 
 function Game() {
-  const { setBand, day, setDay, loading, setLoading, gameStatus } =
+  const { setBand, day, setDay, loading, setLoading, gameStatus, db_url } =
     useGameContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +18,7 @@ function Game() {
   // returns true if successful, false if not
   const fetchBandData = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/bands/date/id", {
+      const res = await axios.get(`${process.env.DB_URL}/bands/date/id`, {
         params: { id: day },
       });
       if (res.data == []) {
@@ -28,7 +28,7 @@ function Game() {
       }
       setBand(res.data[0]);
       //console.log("day", day);
-      //console.log("res", res.data[0]);
+      console.log("res", res.data[0]);
 
       //setLoading(false);
       return true;

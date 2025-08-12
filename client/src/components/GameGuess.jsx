@@ -55,7 +55,7 @@ function GameGuess() {
     const data = generateData(guesses, correct);
     console.log(data);
     try {
-      await axios.post("http://localhost:8800/bands/daily/stats", data);
+      await axios.post(`${process.env.DB_URL}/bands/daily/stats`, data);
     } catch (err) {
       console.log(err);
     }
@@ -112,7 +112,7 @@ function GameGuess() {
 
   return (
     <>
-    {console.log("max", maxGuesses, "guesses", guesses)}
+      {console.log("max", maxGuesses, "guesses", guesses)}
       {gameStatus == Status.PLAYING ? (
         <>
           <p>

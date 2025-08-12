@@ -21,7 +21,7 @@ function AdminCalendar() {
     }
 
     try {
-      const res = await axios.get("http://localhost:8800/bands/date", {
+      const res = await axios.get(`${process.env.DB_URL}/bands/date`, {
         params: dateObj,
       });
       const resBand = res.data[0];

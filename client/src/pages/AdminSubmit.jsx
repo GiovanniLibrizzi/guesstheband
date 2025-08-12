@@ -90,7 +90,7 @@ function AdminSubmit() {
     }
 
     try {
-      await axios.post("http://localhost:8800/bands", band);
+      await axios.post(`${process.env.DB_URL}/bands`, band);
       alert("Successfully entered!");
       window.location.reload();
     } catch (err) {
@@ -112,7 +112,7 @@ function AdminSubmit() {
     //   console.log(err);
     // }
     try {
-      await axios.post("http://localhost:8800/bands/daily/shuffle");
+      await axios.post(`${process.env.DB_URL}/bands/daily/shuffle`);
     } catch (err) {
       console.log(err);
     }

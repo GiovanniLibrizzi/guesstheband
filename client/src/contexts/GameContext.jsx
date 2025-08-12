@@ -16,6 +16,8 @@ export const GameProvider = ({ children }) => {
   const [localStats, setLocalStats] = useState(null);
   const [globalStats, setGlobalStats] = useState(null);
 
+  const db_url = "http://134.209.56.7:8800";
+
   const maxGuesses = 6;
   const [day, setDay] = useState(0);
 
@@ -29,7 +31,7 @@ export const GameProvider = ({ children }) => {
     setPreviousGuesses(gameData.guesses);
 
     setGameStatus(stringToStatus(gameData.gameStatus));
-    setGuesses(gameData.guesses.length+1);
+    setGuesses(gameData.guesses.length + 1);
   };
 
   // Load storage into an object
@@ -82,7 +84,7 @@ export const GameProvider = ({ children }) => {
 
   const loadGlobalStats = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/bands/daily/stats", {
+      const res = await axios.get(`${process.env.DB_URL}/bands/daily/stats`, {
         params: { day_id: day },
       });
       const data = res.data[0];
@@ -171,6 +173,7 @@ export const GameProvider = ({ children }) => {
     localStats,
     setKnewIt,
     globalStats,
+    db_url,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

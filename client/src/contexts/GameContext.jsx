@@ -32,7 +32,7 @@ export const GameProvider = ({ children }) => {
     var status = stringToStatus(gameData.gameStatus);
     setGameStatus(status);
     var guesses = gameData.guesses.length;
-    if (status != gameStatus.PLAYING) {
+    if (status != Status.PLAYING) {
       guesses++;
     }
     setGuesses(guesses);

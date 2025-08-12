@@ -21,7 +21,7 @@
 	}
   }
 
-export const startDate = new Date(2025, 6, 27);
+export const startDate = new Date(2025, 7, 12);
 
 export const aGrammar = (nextWord, capital) => {
 	let returnStr = "A";

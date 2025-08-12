@@ -53,7 +53,7 @@ function GameGuess() {
 
   const sendStats = async (correct) => {
     const data = generateData(guesses, correct);
-    console.log(data);
+    //console.log(data);
     try {
       await axios.post(`${process.env.DB_URL}/bands/daily/stats`, data);
     } catch (err) {

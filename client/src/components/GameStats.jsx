@@ -8,7 +8,6 @@ function GameStats() {
   const [globalGraph, setGlobalGraph] = useState(<></>);
 
   useEffect(() => {
-    console.log("global", globalStats);
     if (globalStats != null) {
       var gg = (
         <>

@@ -1,5 +1,4 @@
 function WinDistribution({ winDistribution }) {
-  console.log("windist", winDistribution);
 
   var graphDist = [];
   const scaleVal = 30;
@@ -18,7 +17,6 @@ function WinDistribution({ winDistribution }) {
   }
 
   if (total == 0) {
-    console.log("NO DATA!");
     normalize = false;
   }
 
@@ -30,12 +28,10 @@ function WinDistribution({ winDistribution }) {
         highestRatio = ratio;
       }
     });
-    console.log("highest", highestRatio);
 
     var scale = 30 / highestRatio;
     winDistribution.map((e, i) => {
       graphDist.push(Math.round((e / total) * scale));
-      console.log("windist map", e);
     });
   } else {
     winDistribution.map((e, i) => {
@@ -43,7 +39,6 @@ function WinDistribution({ winDistribution }) {
     });
   }
 
-  console.log("gdist", graphDist);
 
   return (
     <>
@@ -54,7 +49,6 @@ function WinDistribution({ winDistribution }) {
           ) : (
             <p className="inline">{`X: `}</p>
           )}
-          {console.log("e", e)}
           {[...Array(e)].map((e, i) => (
             <p className="inline">█ </p>
           ))}

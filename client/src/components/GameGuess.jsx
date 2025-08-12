@@ -112,6 +112,7 @@ function GameGuess() {
 
   return (
     <>
+    {console.log("max", maxGuesses, "guesses", guesses)}
       {gameStatus == Status.PLAYING ? (
         <>
           <p>

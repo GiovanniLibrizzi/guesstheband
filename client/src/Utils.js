@@ -48,19 +48,29 @@ export const checkGuess = (guess, answer) => {
 	answer = answer.toLowerCase();
 	guess = guess.toLowerCase();
 	var correct = false;
-	var hasThe = false;
+	var guessHasThe = false;
+	var answerHasThe = false;
 	if (guess == answer) {
 		correct = true;
 	}
+	if (answer.substring(0,4) == "the ") {
+		answerHasThe = true;
+		
+	}
 	//console.log("check:", );
 	if (guess.substring(0,4) == "the ") {
-		hasThe = true;
-		guess = guess.substring(4, guess.length);
-		if (guess == answer) {
-			correct = true;
-		}
+		guessHasThe = true;
 	}
-	
+
+	if (guessHasThe) {
+		correct = checkGuess(guess.substring(4, guess.length), answer);
+	}
+
+	if (answerHasThe) {
+		correct = checkGuess(guess, answer.substring(4, answer.length));
+	}
+
+
 	if (isEditDistanceOne(guess, answer)) {
 		correct = true;
 	}
@@ -71,6 +81,7 @@ export const checkGuess = (guess, answer) => {
 
 
 export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) => {
+	console.log("guesses", guesses)
 	var score = "";
 	for (var i = 0; i < maxGuesses; i++) {
 	
@@ -85,7 +96,7 @@ export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) 
 			if (previousGuesses[i] != null) {
 				score += '🟥';
 			} else {
-				if (i < guesses) {
+				if (i < guesses-1) {
 					score += '⬛';
 				} else {
 					score += '❓';

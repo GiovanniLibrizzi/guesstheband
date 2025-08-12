@@ -29,7 +29,7 @@ export const GameProvider = ({ children }) => {
     setPreviousGuesses(gameData.guesses);
 
     setGameStatus(stringToStatus(gameData.gameStatus));
-    setGuesses(gameData.guesses.length + 1);
+    setGuesses(gameData.guesses.length+1);
   };
 
   // Load storage into an object

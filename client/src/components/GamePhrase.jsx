@@ -100,13 +100,14 @@ function GamePhrase() {
   if (band == null) {
     return <></>;
   }
+  if (!loading) {
+	var albumImgLinkBlur = `/assets/img_album/${band.band_id}-b.jpg`;
+	var albumImgLink = `/assets/img_album/${band.band_id}.jpg`;
 
-  var albumImgLinkBlur = `../src/assets/img_album/${band.band_id}-b.jpg`;
-  var albumImgLink = `../src/assets/img_album/${band.band_id}.jpg`;
+	var bandImgLink = `/assets/img_band/${band.band_id}-m.jpg`;
 
-  var bandImgLink = `../src/assets/img_band/${band.band_id}-m.jpg`;
-
-  var gamePhrases = prepareGamePhrases();
+	var gamePhrases = prepareGamePhrases();
+  }
 
   // HTML return
   return (

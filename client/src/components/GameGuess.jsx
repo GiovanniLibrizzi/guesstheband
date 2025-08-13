@@ -112,7 +112,6 @@ function GameGuess() {
 
   return (
     <>
-      {console.log("max", maxGuesses, "guesses", guesses)}
       {gameStatus == Status.PLAYING ? (
         <>
           <p>
@@ -131,12 +130,12 @@ function GameGuess() {
               onChange={(e) => setGuessQuery(e.target.value)}
               autocomplete="off"
             />
-          </form>
-          <form onSubmit={handleSkip}>
+          </form>      
+          <button form="guessForm">Submit</button>
+		  <br></br>
+		  <form onSubmit={handleSkip}>
             <button>Skip</button>
           </form>
-          <br></br>
-          <button form="guessForm">Submit</button>
         </>
       ) : (
         <div>

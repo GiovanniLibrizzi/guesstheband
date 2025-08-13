@@ -16,8 +16,6 @@ export const GameProvider = ({ children }) => {
   const [localStats, setLocalStats] = useState(null);
   const [globalStats, setGlobalStats] = useState(null);
 
-  const db_url = "http://134.209.56.7:8800";
-
   const maxGuesses = 6;
   const [day, setDay] = useState(0);
 
@@ -110,7 +108,7 @@ export const GameProvider = ({ children }) => {
       };
 
       setGlobalStats(globalData);
-      console.log(globalData);
+      //console.log(globalData);
     } catch (err) {
       console.log(err);
     }
@@ -152,7 +150,7 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (gameStatus != Status.PLAYING) {
       loadGlobalStats();
-      console.log(globalStats);
+      //console.log(globalStats);
     }
   }, [gameStatus]);
 
@@ -177,7 +175,6 @@ export const GameProvider = ({ children }) => {
     localStats,
     setKnewIt,
     globalStats,
-    db_url,
   };
 
   return <GameContext.Provider value={data}>{children}</GameContext.Provider>;

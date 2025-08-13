@@ -1,10 +1,10 @@
-  export const Status = Object.freeze({
+export const Status = Object.freeze({
 	PLAYING: "playing",
 	VICTORY: "victory",
 	FAILURE: "failure",
-  });
+});
 
-  export const stringToStatus = (str) => {
+export const stringToStatus = (str) => {
 	switch (str) {
 		case "playing":
 			return Status.PLAYING;
@@ -19,7 +19,7 @@
 			return null;
 			break;
 	}
-  }
+}
 
 export const startDate = new Date(2025, 7, 12);
 
@@ -32,16 +32,16 @@ export const aGrammar = (nextWord, capital) => {
 	let regex = /^[aeiou]$/;
 	let isVowel = regex.test(letter);
 	if (isVowel) {
-		return returnStr+"n";
+		return returnStr + "n";
 	}
 	return returnStr;
 }
 
 export const getDateNumber = () => {
-	const oneDay = 24*60*60*1000;
+	const oneDay = 24 * 60 * 60 * 1000;
 	const date = new Date();
 
-	return Math.round(Math.abs((startDate.setHours(0,0,0) - date.setHours(0,0,0)) / oneDay)) + 1;
+	return Math.round(Math.abs((startDate.setHours(0, 0, 0) - date.setHours(0, 0, 0)) / oneDay)) + 1;
 }
 
 export const checkGuess = (guess, answer) => {
@@ -53,12 +53,12 @@ export const checkGuess = (guess, answer) => {
 	if (guess == answer) {
 		correct = true;
 	}
-	if (answer.substring(0,4) == "the ") {
+	if (answer.substring(0, 4) == "the ") {
 		answerHasThe = true;
-		
+
 	}
 	//console.log("check:", );
-	if (guess.substring(0,4) == "the ") {
+	if (guess.substring(0, 4) == "the ") {
 		guessHasThe = true;
 	}
 
@@ -84,17 +84,17 @@ export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) 
 	// if (gameStatus != Status.PLAYING) {
 	// 	guesses++;
 	// }
-	console.log("guesses", guesses)
+	//console.log("guesses", guesses)
 	var score = "";
 	for (var i = 0; i < maxGuesses; i++) {
-	
-		if (i >= guesses-1 && gameStatus == Status.VICTORY) {
-			if (i == guesses-1) {
+
+		if (i >= guesses - 1 && gameStatus == Status.VICTORY) {
+			if (i == guesses - 1) {
 				score += '🟩';
 			} else {
 				score += '⬜';
 			}
-			
+
 		} else {
 			if (previousGuesses[i] != null) {
 				score += '🟥';
@@ -105,7 +105,7 @@ export const generateScore = (guesses, maxGuesses, previousGuesses, gameStatus) 
 					score += '❓';
 				}
 			}
-			
+
 		}
 	}
 	// for (var i = guesses; i < maxGuesses-1; i++) {
@@ -126,14 +126,14 @@ export const shareResults = (guesses, maxGuesses, previousGuesses, gameStatus, d
 	const score = generateScore(guesses, maxGuesses, previousGuesses, gameStatus);
 
 	var emojis = ['🎹', '🎸', '🎺', '🎷', '🎧', '🎼', '🎙️', '🎚️', '📻', '🎵', '🎶']
-	
-	var rand = Math.floor(Math.random()*emojis.length);
 
-	var emoji = emojis[day%emojis.length];
+	var rand = Math.floor(Math.random() * emojis.length);
+
+	var emoji = emojis[day % emojis.length];
 	if (guesses == 1) {
 		emoji = '🔥';
 	}
-	var results = `#GuessTheBand #${day}\n\n${emoji}:${score}\n\n<insert link here>`
+	var results = `#GuessTheBand #${day}\n\n${emoji}:${score}\n\nhttps://guessthe.band/`
 	// console.log(previousGuesses)
 	// console.log(guesses);
 	try {
@@ -150,9 +150,9 @@ export const generateScoreFromStorage = (data) => {
 		return "❓❓❓❓❓❓"
 	}
 	if (data.gameStatus == Status.PLAYING) {
-		
+
 	}
-	const guesses = data.guesses.length+1;
+	const guesses = data.guesses.length + 1;
 	const prevGuesses = data.guesses;
 	const gameStatus = data.gameStatus;
 
@@ -164,7 +164,7 @@ export const generateStatusFromStorage = (data) => {
 		return "⬅️ Unplayed"
 	}
 	const status = data.gameStatus;
-	const guesses = data.guesses.length+1;
+	const guesses = data.guesses.length + 1;
 	const prevGuesses = data.guesses;
 	var allSkipped = true;
 	for (var i = 0; i < guesses; i++) {
@@ -179,7 +179,7 @@ export const generateStatusFromStorage = (data) => {
 			break;
 		case Status.FAILURE:
 			if (!allSkipped) {
-			return "❌ Failed 😭";
+				return "❌ Failed 😭";
 			} else {
 				return "❌ All skipped 💀";
 			}
@@ -191,7 +191,7 @@ export const generateStatusFromStorage = (data) => {
 }
 
 export const generateStatsFromStorage = (data) => {
-	
+
 }
 
 
@@ -203,70 +203,70 @@ export const generateStatsFromStorage = (data) => {
 // credit: https://www.geeksforgeeks.org/dsa/check-if-two-given-strings-are-at-edit-distance-one/
 function isEditDistanceOne(s1, s2) {
 
-    // Find lengths of given strings
-    let m = s1.length, n = s2.length;
+	// Find lengths of given strings
+	let m = s1.length, n = s2.length;
 
-    // If difference between lengths is more than  
-    // 1, then strings can't be at one distance
-    if (Math.abs(m - n) > 1)
-        return false;
+	// If difference between lengths is more than  
+	// 1, then strings can't be at one distance
+	if (Math.abs(m - n) > 1)
+		return false;
 
-    // Count of edits
-    let count = 0;
+	// Count of edits
+	let count = 0;
 
-    let i = 0, j = 0;
-    while (i < m && j < n) {
+	let i = 0, j = 0;
+	while (i < m && j < n) {
 
-        // If current characters don't match
-        if (s1[i] !== s2[j]) {
+		// If current characters don't match
+		if (s1[i] !== s2[j]) {
 
-            // If one edit has been done already
-            if (count === 1)
-                return false;
+			// If one edit has been done already
+			if (count === 1)
+				return false;
 
-            // If length of one string is  
-            // more, then only possible edit  
-            // is to remove a character
-            if (m > n)
-                i++;
-            else if (m < n)
-                j++;
-            else {
-                i++;
-                j++;
-            }
+			// If length of one string is  
+			// more, then only possible edit  
+			// is to remove a character
+			if (m > n)
+				i++;
+			else if (m < n)
+				j++;
+			else {
+				i++;
+				j++;
+			}
 
-            // Increment count of edits
-            count++;
-        }
+			// Increment count of edits
+			count++;
+		}
 
-        // If current characters match
-        else {
-            i++;
-            j++;
-        }
-    }
+		// If current characters match
+		else {
+			i++;
+			j++;
+		}
+	}
 
-    // If last character is extra in any string
-    if (i < m || j < n)
-        count++;
+	// If last character is extra in any string
+	if (i < m || j < n)
+		count++;
 
-    return count <= 1;
+	return count <= 1;
 }
- 
+
 // https://stackoverflow.com/questions/175739/how-can-i-check-if-a-string-is-a-valid-number
 export function isNumeric(str) {
-  if (typeof str != "string") return false // we only process strings!  
-  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+	if (typeof str != "string") return false // we only process strings!  
+	return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+		!isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
-export function toPercent(num1, num2, decimal=1) {
-	const power = 10**decimal
+export function toPercent(num1, num2, decimal = 1) {
+	const power = 10 ** decimal
 	if (num2 == 0) {
 		return null;
 	}
-	return Math.round(((num1/num2) * 100)*power)/power + "%"
+	return Math.round(((num1 / num2) * 100) * power) / power + "%"
 
 }
 

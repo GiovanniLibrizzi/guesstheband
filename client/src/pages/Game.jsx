@@ -10,7 +10,7 @@ import "../css/Game.css";
 import PrevDays from "./Archive.jsx";
 
 function Game() {
-  const { setBand, day, setDay, loading, setLoading, gameStatus, db_url } =
+  const { setBand, day, setDay, loading, setLoading, gameStatus, band } =
     useGameContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +35,9 @@ function Game() {
     } catch (err) {
       console.log(err);
       return false;
-    }
+    } finally {
+		//setLoading(false);
+	}
   };
 
   const date = new Date();
@@ -60,9 +62,20 @@ function Game() {
 
   // Fetch band data when day is updated
   useEffect(() => {
-    fetchBandData();
-    setLoading(false);
+	if (day != 0) {
+    	fetchBandData();
+	}
+    //setLoading(false);
   }, [day]);
+
+  useEffect(() => {
+	if (band != null) {
+		setLoading(false);
+	} else {
+		//console.log("band is null!")
+		setLoading(true);
+	}
+  }, [band]);
 
   //   useEffect(() => {
   // 	localStorage.setItem(`game-${day}`, )
@@ -74,7 +87,7 @@ function Game() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <h3>{`Game #${day} (${date.toLocaleDateString()})`}</h3>
+          <h3>{`Band #${day} (${date.toLocaleDateString()})`}</h3>
 
           <GamePhrase />
           <GameGuess />

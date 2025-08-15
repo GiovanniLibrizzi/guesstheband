@@ -18,9 +18,9 @@ const db = mysql.createConnection({
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_SCHEMA, //"db",
 	ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
-         minVersion: 'TLSv1.2',
-         ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
-      } : null,
+		minVersion: 'TLSv1.2',
+		ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
+	} : null,
 	multipleStatements: true,
 
 });
@@ -28,24 +28,24 @@ const db = mysql.createConnection({
 app.use(express.json())
 app.use(cors())
 
-app.get("/", (req, res)=>{
+app.get("/", (req, res) => {
 	res.json("Hello")
 })
 
 
-app.get("/bands", (req,res) => {
+app.get("/bands", (req, res) => {
 	const q = "SELECT * FROM bands"
 	db.query(q, (err, data) => {
 		if (err) {
 			return res.json(err)
-		} 
-		return res.json(data)	
+		}
+		return res.json(data)
 	})
 })
 
 app.get("/bands/today", (req, res) => {
-	const q = 
-	`SELECT * FROM db.bands b
+	const q =
+		`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id
 	WHERE CURDATE()=date;`;
 	db.query(q, (err, data) => {
@@ -59,8 +59,8 @@ app.get("/bands/today", (req, res) => {
 app.get("/bands/date", (req, res) => {
 	const date = req.query.date;
 	//console.log("date",date);
-	const q = 
-	`SELECT * FROM db.bands b
+	const q =
+		`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id
 	WHERE date=?;`;
 	db.query(q, [date], (err, data) => {
@@ -73,8 +73,8 @@ app.get("/bands/date", (req, res) => {
 app.get("/bands/date/id", (req, res) => {
 	const id = req.query.id;
 	//console.log("id",id);
-	const q = 
-	`SELECT * FROM db.bands b
+	const q =
+		`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id
 	WHERE d.id=(?);`;
 	db.query(q, [id], (err, data) => {
@@ -88,8 +88,8 @@ app.get("/bands/date/id", (req, res) => {
 app.get("/bands/dates", (req, res) => {
 	const date = req.query.date;
 	//console.log("date",date);
-	const q = 
-	`SELECT * FROM db.bands b
+	const q =
+		`SELECT * FROM db.bands b
 	INNER JOIN db.daily_bands d ON d.band_id=b.id;`;
 	db.query(q, (err, data) => {
 		if (err) {
@@ -100,8 +100,8 @@ app.get("/bands/dates", (req, res) => {
 })
 
 app.get("/bands/upcoming", (req, res) => {
-	const q = 
-	`SELECT * FROM db.daily_bands
+	const q =
+		`SELECT * FROM db.daily_bands
 	WHERE date > CURDATE()
 	ORDER BY date DESC;`;
 
@@ -117,7 +117,7 @@ app.get("/bands/upcoming", (req, res) => {
 
 // Insert band into backend
 app.post("/bands", (req, res) => {
-	const q = "INSERT INTO bands (`is_artist_solo`, `name`, `years_active`, `location`, `genre`, `subgenres`, `monthly_listeners`, `notable_release_date`, `notable_is_first_work`, `notable_work_name`, `members`, `top_song_5`, `top_song_4`, `top_song_3`, `top_song_2`, `top_song_1`, `album_count`, `ep_count`, `label_name`) VALUES (?)"
+	const q = "INSERT INTO db.bands (`is_artist_solo`, `name`, `years_active`, `location`, `genre`, `subgenres`, `monthly_listeners`, `notable_release_date`, `notable_is_first_work`, `notable_work_name`, `members`, `top_song_5`, `top_song_4`, `top_song_3`, `top_song_2`, `top_song_1`, `album_count`, `ep_count`, `label_name`) VALUES (?)"
 	// insert into bands db
 	const values = [
 		req.body.is_artist_solo,
@@ -150,12 +150,12 @@ app.post("/bands", (req, res) => {
 		//console.log(res.json(data));
 		//bandId = data[0].band_id;
 		//return res.json("Band has been created successfully.")
-		
+
 	});
 
 	// Get last insert ID, then insert into daily_bands db with a new unused date
-	const q2 = 
-	`SELECT LAST_INSERT_ID()`
+	const q2 =
+		`SELECT LAST_INSERT_ID()`
 	db.query(q2, (err, data) => {
 		if (err) {
 			return res.json(err);
@@ -163,8 +163,8 @@ app.post("/bands", (req, res) => {
 		bandId = Object.values(data[0])[0];
 
 		// get previous date
-		const q3 = 
-		`SELECT * FROM db.daily_bands
+		const q3 =
+			`SELECT * FROM db.daily_bands
 		WHERE date > CURDATE()
 		ORDER BY date DESC;`;
 
@@ -185,10 +185,10 @@ app.post("/bands", (req, res) => {
 			console.log(data);
 			//return res.json(data);
 
-			
+
 			// insert into daily_bands db
-			const q4 = 
-			"INSERT INTO daily_bands (`date`, `band_id`) VALUES (?)"
+			const q4 =
+				"INSERT INTO db.daily_bands (`date`, `band_id`) VALUES (?)"
 			const values3 = [
 				newDate,
 				bandId
@@ -203,7 +203,7 @@ app.post("/bands", (req, res) => {
 		})
 	})
 
-	
+
 
 
 
@@ -212,12 +212,12 @@ app.post("/bands", (req, res) => {
 
 app.post("/bands/daily/shuffle", (req, res) => {
 	// get previous date
-	const q = 
-	`SELECT * FROM db.daily_bands
+	const q =
+		`SELECT * FROM db.daily_bands
 	WHERE date > CURDATE()
 	ORDER BY date ASC;`;
 
-	
+
 
 	db.query(q, (err, data) => {
 		if (err) {
@@ -250,13 +250,13 @@ app.post("/bands/daily/shuffle", (req, res) => {
 		console.log(q2);
 
 		db.query(q2, (err, data) => {
-				if (err) {
-					console.log(err);
-					return res.json(err);
-				}
-				return res.json("Upcoming daily bands have successfully been shuffled.");
-			});
-		
+			if (err) {
+				console.log(err);
+				return res.json(err);
+			}
+			return res.json("Upcoming daily bands have successfully been shuffled.");
+		});
+
 	})
 })
 
@@ -268,7 +268,7 @@ app.post("/bands/daily/shuffle", (req, res) => {
 // 	WHERE date > CURDATE()
 // 	ORDER BY date ASC;`;
 
-	
+
 
 // 	db.query(q, (err, data) => {
 // 		if (err) {
@@ -307,11 +307,11 @@ app.post("/bands/daily/shuffle", (req, res) => {
 // 				}
 // 				return res.json("Upcoming daily bands have successfully been shuffled.");
 // 			});
-		
+
 // 	})
 
 
-	
+
 // })
 
 
@@ -319,8 +319,8 @@ app.post("/bands/daily/shuffle", (req, res) => {
 app.get("/bands/daily/stats", (req, res) => {
 	const day_id = req.query.day_id;
 	//console.log("date",date);
-	const q = 
-	`SELECT * FROM db.stats WHERE day_id=?`;
+	const q =
+		`SELECT * FROM db.stats WHERE day_id=?`;
 	db.query(q, [day_id], (err, data) => {
 		if (err) {
 			return res.json(err);
@@ -335,7 +335,7 @@ app.post("/bands/daily/stats", (req, res) => {
 	// detect if row needs to be inserted
 	const q = `SELECT EXISTS(SELECT * FROM db.stats WHERE day_id=?);`;
 
-	
+
 
 	db.query(q, [day_id], (err, data) => {
 		if (err) {
@@ -349,7 +349,7 @@ app.post("/bands/daily/stats", (req, res) => {
 			// insert row if it needs to be inserted
 			q2 += `INSERT INTO db.stats (day_id) VALUES (${day_id}); `;
 		}
-		
+
 		// update in# columns
 		var columns = []
 		for (var i = 0; i < Object.keys(req.body).length; i++) {
@@ -409,7 +409,7 @@ app.get("/accounts", (req, res) => {
 	const username = req.query.username;
 	//console.log("EXPRESS: USERNAME:", username);
 	const q = `SELECT * FROM db.accounts WHERE username=?`;
-	
+
 	db.query(q, [username], (err, data) => {
 		if (err) {
 			return res.json(err);
@@ -428,17 +428,17 @@ app.listen(port, () => {
 
 
 function shuffle(array) {
-  let currentIndex = array.length;
+	let currentIndex = array.length;
 
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
+	// While there remain elements to shuffle...
+	while (currentIndex != 0) {
 
-    // Pick a remaining element...
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+		// Pick a remaining element...
+		let randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
 
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
+		// And swap it with the current element.
+		[array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+	}
 }

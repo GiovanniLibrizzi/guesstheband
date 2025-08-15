@@ -1,52 +1,53 @@
-
 form {
-    display: inline;
+	display: inline;
 }
 
 .results {
-  white-space: pre-wrap;
-  
+	white-space: pre-wrap;
+
 }
 
 .phrase {
 	text-align: left;
 	display: inline
-};
+}
+
 .right {
 	text-align: right;
 }
 
-.albumImg { 
-	padding-top:20px;
+.albumImg {
+	padding-top: 20px;
 	width: 250px;
 	display: inline-block;
-  	margin: auto;
+	margin: auto;
 }
-.bandImg { 
-	padding-top:20px;
+
+.bandImg {
+	padding-top: 20px;
 	width: 300px;
 	display: inline-block;
-  	margin: auto;
+	margin: auto;
 	padding: 20px;
 }
 
 
 .center {
 	display: block;
-  	margin: auto;
+	margin: auto;
 	width: 50%;
 }
 
-.center-p { 
+.center-p {
 	display: block;
-  	margin: auto;
-	text-align:center;
+	margin: auto;
+	text-align: center;
 }
 
-.notable-name { 
+.notable-name {
 	display: block;
-  	margin: auto;
-	text-align:right;
+	margin: auto;
+	text-align: right;
 	padding-right: 15px;
 }
 
@@ -55,45 +56,45 @@ form {
 }
 
 input {
-	width:200px;
-	height:20px;
+	width: 200px;
+	height: 20px;
 }
 
 
 img {
-    transition:transform 0.2s ease;
+	transition: transform 0.2s ease;
 }
 
 img:hover {
-    -webkit-transform:scale(1.5);
-    transform:scale(1.5);
+	-webkit-transform: scale(1.5);
+	transform: scale(1.5);
 }
 
 .topButton {
 	display: inline-block;
-    vertical-align:top;
+	vertical-align: top;
 	margin-top: 0px;
-	float:right;
+	float: right;
 	border-radius: 2px;
-  	border: 2px solid transparent;
-  	padding: 0.2em 0.7em;
+	border: 2px solid transparent;
+	padding: 0.2em 0.7em;
 }
+
 .title {
-	display:inline;
+	display: inline;
 }
 
 .inline {
-	display:inline;
+	display: inline;
 }
 
 
-.guesses { 
-	line-height:1;
+.guesses {
+	line-height: 1;
 }
 
 .guessBox {
-	display:inline;
-	width:200px;	
-	height:20px;
+	display: inline;
+	width: 200px;
+	height: 20px;
 }
-

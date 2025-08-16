@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Admin.css";
+import AdminLogin from "../components/AdminLogin";
 
 function ImageTest() {
   const [image, setImage] = useState(null);
@@ -38,7 +39,7 @@ function ImageTest() {
     setImage(target.files[0]);
   }
 
-  return (
+  const testHtml = (
     <>
       <form onSubmit={handleSubmit}>
         <input
@@ -52,6 +53,8 @@ function ImageTest() {
       </form>
     </>
   );
+
+  return <AdminLogin renderHTML={testHtml} />;
 }
 
 export default ImageTest;

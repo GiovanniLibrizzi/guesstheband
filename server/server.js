@@ -5,6 +5,9 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
 const fs = require('fs')
+const multer = require('multer')
+const bodyParser = require('body-parser')
+const path = require('path')
 
 
 const app = express()
@@ -27,6 +30,8 @@ const db = mysql.createConnection({
 
 app.use(express.json())
 app.use(cors())
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 app.get("/", (req, res) => {
 	res.json("Hello")
@@ -165,7 +170,6 @@ app.post("/bands", (req, res) => {
 		// get previous date
 		const q3 =
 			`SELECT * FROM db.daily_bands
-		WHERE date > CURDATE()
 		ORDER BY date DESC;`;
 
 		var newDate = null;
@@ -417,6 +421,91 @@ app.get("/accounts", (req, res) => {
 		return res.json(data);
 	})
 })
+
+
+
+
+
+app.get("/bands/latest_id", (req, res) => {
+	var band_id = null
+	const q = `SELECT id FROM db.bands 
+		ORDER BY id DESC
+		LIMIT 1;`; 
+
+	db.query(q, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+
+		return res.json(Object.values(data[0])[0])
+	})
+})
+
+// image uploading
+const imageUploadPath = "./assets/img_album";
+
+const storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		cb(null, imageUploadPath)
+	},
+	filename: function(req, file, cb) {
+		cb(null,
+			`${file.fieldname}${path.extname(file.originalname)}`
+		)
+	}
+})
+
+const imageUpload = multer({storage: storage});
+
+
+async function getNewewstBandID() {
+	const q = `SELECT id FROM db.bands 
+		ORDER BY id DESC
+		LIMIT 1;`; 
+	var band_id = null
+	db.query(q, (err, data) => {
+		if (err) {
+			return res.json(err);
+		}
+
+		band_id = Object.values(data[0])[0]
+
+
+		console.log(band_id)
+		return band_id;
+	})
+}
+
+
+function getImg() {
+
+	const storage = multer.diskStorage({
+		destination: function(req, file, cb) {
+			cb(null, imageUploadPath)
+		},
+		filename: function(req, file, cb) {
+			cb(null,
+				`${file.originalname}`
+			)
+		}
+	})
+
+	const imageUpload = multer({storage: storage});
+	return imageUpload.array("my-image-file");
+	
+
+	
+}
+
+app.post('/image/album', getImg(), (req, res) => {
+	//console.log(getLastBandID());
+
+  console.log('POST request received to /image-upload.');
+  console.log('Axios POST body: ', req.body);
+  res.send('POST request recieved on server to /image-upload.');
+})
+
+
 
 
 

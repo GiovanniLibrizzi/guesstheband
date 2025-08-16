@@ -3,24 +3,39 @@ import axios from "axios";
 import "../css/Admin.css";
 
 function ImageTest() {
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (file == null) {
-      return;
-    }
-
-    console.log("file", file);
+    //console.log("target", target.files);
 
     const formData = new FormData();
-    formData.append("file", file);
+    // formData.append("my-image-file", image, image.name);
+
+    // axios.post(`${process.env.DB_URL}/image/album`, formData).then((res) => {
+    //   console.log("Axios response: ", res);
+    // });
+    try {
+      const res = await axios.get(`${process.env.DB_URL}/bands/latest_id`);
+      //console.log(res);
+      var filename = res.data;
+      console.log(filename);
+
+      formData.append("my-image-file", image, filename + ".jpg");
+
+      axios.post(`${process.env.DB_URL}/image/album`, formData).then((res) => {
+        console.log("Axios response: ", res);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
+
   function handleChange(e) {
     const target = e.target;
-    console.log("target", target.files);
-    setFile(target.files[0]);
+
+    setImage(target.files[0]);
   }
 
   return (

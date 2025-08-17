@@ -5,7 +5,7 @@ import { useGameContext } from "../contexts/GameContext.jsx";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import axios from "axios";
-import { getDateNumber, isNumeric, Status } from "../Utils.js";
+import { getDateNumber, isNumeric, dateFromNumber } from "../Utils.js";
 import "../css/Game.css";
 import PrevDays from "./Archive.jsx";
 
@@ -36,8 +36,8 @@ function Game() {
       console.log(err);
       return false;
     } finally {
-		//setLoading(false);
-	}
+      //setLoading(false);
+    }
   };
 
   const date = new Date();
@@ -62,19 +62,19 @@ function Game() {
 
   // Fetch band data when day is updated
   useEffect(() => {
-	if (day != 0) {
-    	fetchBandData();
-	}
+    if (day != 0) {
+      fetchBandData();
+    }
     //setLoading(false);
   }, [day]);
 
   useEffect(() => {
-	if (band != null) {
-		setLoading(false);
-	} else {
-		//console.log("band is null!")
-		setLoading(true);
-	}
+    if (band != null) {
+      setLoading(false);
+    } else {
+      //console.log("band is null!")
+      setLoading(true);
+    }
   }, [band]);
 
   //   useEffect(() => {
@@ -87,7 +87,9 @@ function Game() {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          <h3>{`Band #${day} (${date.toLocaleDateString()})`}</h3>
+          <h3>{`Band #${day} (${dateFromNumber(
+            day
+          ).toLocaleDateString()})`}</h3>
 
           <GamePhrase />
           <GameGuess />

@@ -94,7 +94,16 @@ img:hover {
 }
 
 .guessBox {
+	/* font-size: 16px; */
 	display: inline;
 	width: 200px;
 	height: 20px;
 }
+
+@media only screen and (hover: none) and (pointer: coarse){
+.guessBox {
+	font-size: 16px;
+
+}
+
+ }

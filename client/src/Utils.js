@@ -24,10 +24,8 @@ export const stringToStatus = (str) => {
 export const startDate = new Date(2025, 7, 12);
 
 export const dateFromNumber = (dayNum=0) => {
-	console.log(dayNum)
 	var newDate = new Date(startDate);
 	newDate.setDate(newDate.getDate() + (dayNum-1));
-	console.log(newDate);
 	return newDate;
 }
 

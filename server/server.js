@@ -442,7 +442,7 @@ app.get("/bands/latest_id", (req, res) => {
 })
 
 // image uploading
-const imageUploadPath = "./assets/img_album";
+const imageUploadPath = "../client/public/assets/images";
 
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
@@ -505,6 +505,21 @@ app.post('/image/album', getImg(), (req, res) => {
   res.send('POST request recieved on server to /image-upload.');
 })
 
+app.post('/image/album_blur', getImg(), (req, res) => {
+	//console.log(getLastBandID());
+
+  console.log('POST request received to /image-upload.');
+  console.log('Axios POST body: ', req.body);
+  res.send('POST request recieved on server to /image-upload.');
+})
+
+app.post('/image/members', getImg(), (req, res) => {
+	//console.log(getLastBandID());
+
+  console.log('POST request received to /image-upload.');
+  console.log('Axios POST body: ', req.body);
+  res.send('POST request recieved on server to /image-upload.');
+})
 
 
 

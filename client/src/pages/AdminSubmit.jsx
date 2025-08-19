@@ -26,7 +26,9 @@ function AdminSubmit() {
     ep_count: null,
     label_name: null,
   });
-  var bandImageSubmitted = false;
+  const [imageAlbum, setImageAlbum] = useState(null);
+  const [imageAlbumBlur, setImageAlbumBlur] = useState(null);
+  const [imageBand, setImageBand] = useState(null);
 
   var noMembers = false;
 
@@ -60,13 +62,13 @@ function AdminSubmit() {
         case "members":
           if (band[key] == null || band[key] == "") {
             // check if band member image has been uploaded
-            if (bandImageSubmitted) {
+            if (imageBand != null) {
               break;
             }
             //invalidNull = true;
             noMembers = true;
             //console.log(`${key} was found with an empty value! Cannot submit.`);
-
+            return;
             break;
           }
           break;
@@ -83,19 +85,61 @@ function AdminSubmit() {
             invalidNull = true;
             alert(`${key} was found with an empty value! Cannot submit.`);
             console.log(`${key} was found with an empty value! Cannot submit.`);
+            return;
           }
           break;
       }
       //console.log(key, " ||| ", band[key]);
     }
+    if (imageAlbum == null || imageAlbumBlur == null) {
+      alert("no album image(s)! cannot submit");
+      return;
+    }
 
     try {
       await axios.post(`${process.env.DB_URL}/bands`, band);
-      alert("Successfully entered!");
-      window.location.reload();
+      // Upload images
+      try {
+        const res = await axios.get(`${process.env.DB_URL}/bands/latest_id`);
+        var filename = res.data;
+        console.log(filename);
+        //filename = "test";
+
+        const formData = new FormData();
+        formData.append("my-image-file", imageAlbum, filename + ".jpg");
+        axios
+          .post(`${process.env.DB_URL}/image/album`, formData)
+          .then((res) => {
+            console.log("Axios response: ", res);
+          });
+
+        const formBlur = new FormData();
+        formBlur.append("my-image-file", imageAlbumBlur, filename + "-b.jpg");
+        axios
+          .post(`${process.env.DB_URL}/image/album_blur`, formBlur)
+          .then((res) => {
+            console.log("Axios response: ", res);
+          });
+
+        if (imageBand != null) {
+          const formMembers = new FormData();
+          formMembers.append("my-image-file", imageBand, filename + "-m.jpg");
+          axios
+            .post(`${process.env.DB_URL}/image/members`, formMembers)
+            .then((res) => {
+              console.log("Axios response: ", res);
+            });
+        }
+
+        alert("Successfully entered!");
+        window.location.reload();
+      } catch (err) {
+        console.log(err);
+      }
     } catch (err) {
       console.log(err);
     }
+
     //console.log("Band object:", band);
   };
 
@@ -122,7 +166,7 @@ function AdminSubmit() {
     <>
       <h3>Submit a band entry into the database</h3>
 
-      <form onChange={handleChange} autocomplete="off">
+      <form onChange={handleChange} autoComplete="off">
         <p>Entry is an artist (and not a band)</p>
         <input
           type="checkbox"
@@ -147,7 +191,7 @@ function AdminSubmit() {
           name="notable_is_first_work"
         ></input>
         <input placeholder="Notable work name" name="notable_work_name"></input>
-        <p>Notable release is first work</p>
+        <p>Notable release's release date</p>
 
         <input
           type="date"
@@ -173,6 +217,28 @@ function AdminSubmit() {
         )}
       </form>
 
+      <p>Notable album cover image</p>
+      <input
+        type="file"
+        accept=".jpg"
+        placeholder="img_album"
+        name="img_album"
+        onChange={(e) => {
+          setImageAlbum(e.target.files[0]);
+        }}
+      ></input>
+
+      <p>Notable album cover image (blurred)</p>
+      <input
+        type="file"
+        accept=".jpg"
+        placeholder="img_album_blur"
+        name="img_album_blur"
+        onChange={(e) => {
+          setImageAlbumBlur(e.target.files[0]);
+        }}
+      ></input>
+
       {!band.is_artist_solo && (
         <>
           <p>Band members image</p>
@@ -181,18 +247,12 @@ function AdminSubmit() {
             accept=".jpg"
             placeholder="img_band"
             name="img_band"
+            onChange={(e) => {
+              setImageBand(e.target.files[0]);
+            }}
           ></input>{" "}
         </>
       )}
-
-      <p>Notable album cover image</p>
-      <input
-        type="file"
-        accept=".jpg"
-        placeholder="img_album"
-        name="img_album"
-      ></input>
-
       <br></br>
       <br></br>
       <button onClick={handleSubmit}>Submit new band entry</button>

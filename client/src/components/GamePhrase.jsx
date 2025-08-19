@@ -101,12 +101,12 @@ function GamePhrase() {
     return <></>;
   }
   if (!loading) {
-	var albumImgLinkBlur = `/assets/img_album/${band.band_id}-b.jpg`;
-	var albumImgLink = `/assets/img_album/${band.band_id}.jpg`;
+    var albumImgLinkBlur = `/assets/images/${band.band_id}-b.jpg`;
+    var albumImgLink = `/assets/images/${band.band_id}.jpg`;
 
-	var bandImgLink = `/assets/img_band/${band.band_id}-m.jpg`;
+    var bandImgLink = `/assets/images/${band.band_id}-m.jpg`;
 
-	var gamePhrases = prepareGamePhrases();
+    var gamePhrases = prepareGamePhrases();
   }
 
   // HTML return

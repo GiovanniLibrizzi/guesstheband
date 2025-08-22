@@ -67,8 +67,11 @@ function AdminSubmit() {
             }
             //invalidNull = true;
             noMembers = true;
-            //console.log(`${key} was found with an empty value! Cannot submit.`);
-            return;
+            if (!band.is_artist_solo) {
+              console.log(`${key} was found with an empty value! Cannot submit.`);
+              return;
+            }
+            //return;
             break;
           }
           break;

@@ -184,9 +184,9 @@ app.post("/bands", (req, res) => {
 			const latestDate = new Date(data[0].date);
 			newDate = new Date(latestDate);
 			newDate.setDate(latestDate.getDate() + 1);
-			console.log("latest", latestDate);
-			console.log("increased", newDate);
-			console.log(data);
+			//console.log("latest", latestDate);
+			//console.log("increased", newDate);
+			//console.log(data);
 			//return res.json(data);
 
 
@@ -265,59 +265,6 @@ app.post("/bands/daily/shuffle", (req, res) => {
 })
 
 
-// app.post("/bands/daily/swap", (req, res) => {
-// 	// get previous date
-// 	const q = 
-// 	`SELECT * FROM db.daily_bands
-// 	WHERE date > CURDATE()
-// 	ORDER BY date ASC;`;
-
-
-
-// 	db.query(q, (err, data) => {
-// 		if (err) {
-// 			return res.json(err);
-// 		}
-
-// 		console.log(data);
-// 		const startId = data[0].id;
-// 		const bandIds = []
-// 		const dayIds = []
-
-// 		data.forEach(e => {
-// 			bandIds.push(e.band_id)
-// 			dayIds.push(e.id);
-// 			//console.log(element.band_id)
-// 		});
-// 		console.log(startId, bandIds);
-
-// 		var q2 = "";
-// 		shuffle(bandIds);
-// 		console.log(bandIds);
-
-
-// 		bandIds.forEach((e, i) => {
-// 			q2 += `UPDATE db.daily_bands SET band_id = ${e} WHERE (id = ${dayIds[i]}); `
-// 		})
-
-// 		// q2 = `UPDATE db.daily_bands SET band_id = 10 WHERE (id = 8);`
-
-// 		console.log(q2);
-
-// 		db.query(q2, (err, data) => {
-// 				if (err) {
-// 					console.log(err);
-// 					return res.json(err);
-// 				}
-// 				return res.json("Upcoming daily bands have successfully been shuffled.");
-// 			});
-
-// 	})
-
-
-
-// })
-
 
 // Get stats
 app.get("/bands/daily/stats", (req, res) => {
@@ -363,7 +310,7 @@ app.post("/bands/daily/stats", (req, res) => {
 				if (value > 0) {
 					columns.push(key);
 				}
-				console.log("key", key);
+				//console.log("key", key);
 			}
 		}
 
@@ -374,7 +321,7 @@ app.post("/bands/daily/stats", (req, res) => {
 		// update knew it columns
 
 
-		console.log(q2);
+		//console.log(q2);
 
 		db.query(q2, (err, data) => {
 			if (err) {

@@ -10,9 +10,15 @@ Install Node.js
 run `npm i` in both server and client folders
 
 Start server:
+
+```
 cd ./server
 npm run dev
+```
 
 Start client:
+
+```
 cd ./client
 npm run dev
+```

@@ -116,6 +116,8 @@ export const GameProvider = ({ children }) => {
 
   // Load local storage into the states
   useEffect(() => {
+    loadLocalStats();
+    console.log(day);
     if (day == 0) {
       return;
     }
@@ -123,7 +125,6 @@ export const GameProvider = ({ children }) => {
     if (loadedData != null) {
       loadGameData(loadedData);
     }
-    loadLocalStats();
   }, [day]);
 
   // Set local storage

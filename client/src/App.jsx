@@ -9,6 +9,7 @@ import "./css/App.css";
 import Archive from "./pages/Archive";
 import About from "./pages/About";
 import ImageTest from "./pages/ImageTest";
+import Stats from "./pages/Stats";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<Game />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/about" element={<About />} />
+            <Route path="/stats" element={<Stats />} />
             <Route path="/admin/submit" element={<AdminSubmit />} />
             <Route path="/admin/calendar" element={<AdminCalendar />} />
             <Route path="/admin/test" element={<ImageTest />} />

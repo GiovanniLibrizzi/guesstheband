@@ -23,6 +23,9 @@ function TopBar() {
       <a href="/archive">
         <button className="topButton">Past</button>
       </a>
+      <a href="/stats">
+        <button className="topButton">Stats</button>
+      </a>
     </>
   );
 }

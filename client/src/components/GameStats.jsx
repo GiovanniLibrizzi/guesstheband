@@ -11,7 +11,7 @@ function GameStats() {
     if (globalStats != null) {
       var gg = (
         <>
-			<p>{`${globalStats.totalKnewIt} of players got the answer right`}</p>
+          <p>{`${globalStats.totalKnewIt} of players got the answer right`}</p>
           {globalStats.knewIt != null && (
             <>
               <p>{`~${globalStats.knewIt} of players who failed have heard of the answer`}</p>
@@ -30,17 +30,6 @@ function GameStats() {
     <>
       {gameStatus != Status.PLAYING && (
         <>
-          <br></br>
-          <p>Win Distribution:</p>
-          <WinDistribution winDistribution={localStats.winDistribution} />
-
-          <p>{`Games played: ${localStats.gamesPlayed}`}</p>
-          <p>{`Games won: ${localStats.gamesWon}`}</p>
-          <p>{`Win percent: ${toPercent(
-            localStats.gamesWon,
-            localStats.gamesPlayed
-          )}`}</p>
-
           <br></br>
           {globalGraph}
         </>

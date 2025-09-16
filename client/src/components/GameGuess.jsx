@@ -8,6 +8,7 @@ import {
   getDateNumber,
   Status,
   aGrammar,
+  generateScore,
 } from "../Utils.js";
 import KnowButton from "./KnowButton.jsx";
 
@@ -27,6 +28,7 @@ function GameGuess() {
   } = useGameContext();
 
   const inputRef = useRef(null);
+  const [shared, setShared] = useState(false);
 
   if (band == null) {
     return <></>;
@@ -130,10 +132,10 @@ function GameGuess() {
               onChange={(e) => setGuessQuery(e.target.value)}
               autocomplete="off"
             />
-          </form>      
+          </form>
           <button form="guessForm">Submit</button>
-		  <br></br>
-		  <form onSubmit={handleSkip}>
+          <br></br>
+          <form onSubmit={handleSkip}>
             <button>Skip</button>
           </form>
         </>
@@ -153,8 +155,7 @@ function GameGuess() {
           </p>
           <KnowButton />
 
-          <br></br>
-          <p className="results">{`${shareResults(
+          <p className="results">{`Your score: ${generateScore(
             guesses,
             maxGuesses,
             previousGuesses,
@@ -163,6 +164,7 @@ function GameGuess() {
           )}`}</p>
           <button
             onClick={() => {
+              setShared(true);
               navigator.clipboard.writeText(
                 shareResults(
                   guesses,
@@ -176,6 +178,7 @@ function GameGuess() {
           >
             Share
           </button>
+          {shared && <p className="tiny">Results copied to clipboard!</p>}
         </div>
       )}
 
